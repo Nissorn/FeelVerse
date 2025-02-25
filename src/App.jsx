@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import gsap from 'gsap';
 
 import Login from './auth/Login.jsx';
+import Register from './auth/Register.jsx';
 import Dashboard from './components/Dashboard.jsx';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
       </div>

@@ -44,7 +44,7 @@ const Login = () => {
           </div>
         )}
         {/* Black box container positioned to overlap with glass-card */}
-        <div className='w-[75vw] xs:w-[75vw] sm:w-[60vw] md:w-[45vw] lg:w-[35vw] xl:w-[30vw] h-[30vh] bg-black rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
+        <div className='w-[85%] max-w-[336px] h-[30vh] bg-black rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
           <h1 className='text-gray-700 text-xl'>"No account yet"</h1>
           <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
             Yes
@@ -83,7 +83,7 @@ const Login = () => {
             className="space-button w-full"
             disabled={loading}
           >
-            {loading ? 'Signing In...' : 'Enter'}
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
 
           <div className="flex items-center justify-center text-[10px]">
