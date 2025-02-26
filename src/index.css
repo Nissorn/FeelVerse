@@ -15,6 +15,11 @@
   .glass-card {
     @apply bg-white/10 backdrop-blur-lg rounded-[25px] border border-white/20 shadow-lg;
   }
+
+  /* Add placeholder styling */
+  input::placeholder {
+    @apply text-gray-500 text-xs;
+  }
   
   .space-button {
     @apply bg-black px-6 py-2 hover:bg-black/20 transition-all duration-300 active:scale-95 rounded-[30px];
