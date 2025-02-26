@@ -21,7 +21,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-space-bg bg-cover bg-center overflow-hidden relative">
         {/* Background stars */}
-        <div className="fixed inset-0 pointer-events-none">
+        {/* <div className="fixed inset-0 pointer-events-none">
           {[...Array(50)].map((_, i) => (
             <div
               key={i}
@@ -33,14 +33,16 @@ function App() {
               }}
             />
           ))}
-        </div>
+        </div> */}
 
         {/* Main content */}
         <div className="relative z-10 container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            
           </Routes>
         </div>
       </div>

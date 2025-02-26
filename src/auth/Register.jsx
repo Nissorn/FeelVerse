@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import Footer from '../components/Footer';
+
 const Register = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -14,15 +16,18 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center flex-col">
+    <div className="flex min-h-screen items-center justify-center flex-col mt-[-5vh]">
       <h2 className="text-gradient text-3xl font-bold mb-12 mt-[-2rem]">Join the space</h2>
-      <div className="glass-card p-8 w-full h-[70vh] max-w-md relative">
-        {/* Black box container positioned to overlap with glass-card */}
-        <div className='w-[85%] max-w-[336px] h-[35vh] bg-black rounded-[20px] absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
+      {/* Glass Card Container */}
+      <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative">
+        {/* Black box container*/}
+        <div className='w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
           <h1 className='text-gray-700 text-xl'>"Already have account?"</h1>
-          <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
-            Yes
-          </button>
+          <Link to="/Login">
+            <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
+                Yes
+            </button>
+          </Link>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
@@ -72,11 +77,7 @@ const Register = () => {
           </p> */}
         </form>
       </div>
-      <footer>
-        <p className="text-white text-center mt-16 text-[10px]">
-          &copy; {new Date().getFullYear()} Feel Verse. All rights reserved.
-        </p>
-      </footer>
+      <Footer/>
     </div>
   );
 };

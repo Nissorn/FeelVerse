@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    font-family: 'Mina', sans-serif;
+  }
   body {
     @apply bg-black text-white min-h-screen;
     background: linear-gradient(to bottom right, #1a1a2e, #16213e, #1B1F3B, #2E1B3B);
@@ -13,7 +16,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/10 backdrop-blur-lg rounded-[25px] border border-white/20 shadow-lg;
+    @apply bg-white/5 backdrop-blur-sm rounded-[25px] border border-white/10 shadow-xl;
   }
 
   /* Add placeholder styling */
