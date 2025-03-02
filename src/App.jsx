@@ -4,7 +4,7 @@ import gsap from 'gsap';
 
 import Login from './auth/Login.jsx';
 import Register from './auth/Register.jsx';
-import Dashboard from './components/Dashboard.jsx';
+import Home from './components/Home.jsx';
 
 function App() {
   useEffect(() => {
@@ -19,30 +19,14 @@ function App() {
   
   return (
     <Router>
-      <div className="min-h-screen bg-space-bg bg-cover bg-center overflow-hidden relative">
-        {/* Background stars */}
-        {/* <div className="fixed inset-0 pointer-events-none">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="stars absolute w-1 h-1 bg-white rounded-full opacity-0"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`
-              }}
-            />
-          ))}
-        </div> */}
-
+      <div className="fixed inset-0 w-full h-full bg-space-bg bg-cover bg-center bg-no-repeat">
         {/* Main content */}
-        <div className="relative z-10 container mx-auto px-4 py-8">
+        <div className="relative z-10 min-h-screen w-full">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            
+            <Route path="/home" element={<Home />} />
           </Routes>
         </div>
       </div>

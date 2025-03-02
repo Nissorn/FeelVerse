@@ -30,44 +30,48 @@ const Register = () => {
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div>
-          <label className="block text-sm font-medium text-white mb-3 mt-7 text-center">Register</label>
-            <input
-              type="email"
-              placeholder='Enter your email'
-              className="w-full glass-card bg-black/60 text-white focus:bg-nebula-glow rounded-[30px]"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="space-y-4 mb-8">
+            <div>
+              <label className="block text-sm font-medium text-white mb-3 mt-3 text-center">Register</label>
+              <input
+                type="email"
+                placeholder='Enter your email'
+                className="w-full glass-card bg-black/60 text-white focus:bg-nebula-glow rounded-[30px]"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <input
+                type="password"
+                placeholder='Enter your password'
+                className="w-full glass-card bg-black/60 text-white rounded-[30px]"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <input
+                type="password"
+                placeholder='Confirm your password'
+                className="w-full glass-card bg-black/60 text-white rounded-[30px]"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                required
+              />
+            </div>
           </div>
 
-          <div>
-            <input
-              type="password"
-              placeholder='Enter your password'
-              className="w-full glass-card bg-black/60 text-white rounded-[30px]"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              required
-            />
+          <div className="flex-grow flex items-end mb-4">
+            <button type="submit" className="space-button w-full hover:nebula-glow ">
+              Sign Up
+            </button>
           </div>
-
-          <div>
-            <input
-              type="password"
-              placeholder='Confirm your password'
-              className="w-full glass-card bg-black/60 text-white rounded-[30px]"
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              required
-            />
-          </div>
-
-          <button type="submit" className="space-button w-full">
-            Sign Up
-          </button>
 
           {/* <p className="text-center text-sm text-gray-400">
             Already have an account?{' '}

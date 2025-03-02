@@ -25,7 +25,7 @@ const Login = () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         // Store auth token or user data in localStorage/context
         localStorage.setItem('isAuthenticated', 'true');
-        navigate('/dashboard');
+        navigate('/home');
       } else {
         throw new Error('Invalid email or password');
       }
@@ -49,7 +49,7 @@ const Login = () => {
         )}
 
         {/* Black box container with signup link*/}
-        <div className='w-[85%] max-w-[336px] h-[30vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
+        <div className='w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
           <h1 className='text-gray-700 text-xl'>"No account yet"</h1>
           <Link to="/register">
             <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
@@ -58,40 +58,44 @@ const Login = () => {
           </Link>
           
         </div>
+        {/* Form Container  */}
+        <form onSubmit={handleSubmit} className="flex flex-col mt-[30vh]">
+          <div className="space-y-4 mb-8">
+            <div>
+              <label className="block text-sm font-medium text-white mb-1 text-center">Login</label>
+              <input
+                type="email"
+                placeholder='Enter your email'
+                className="w-full glass-card bg-black/35 text-white rounded-[30px]"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+                disabled={loading}
+              />
+            </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-[25vh]">
-          <div>
-            <label className="block text-sm font-medium text-white mb-1 text-center">Login</label>
-            <input
-              type="email"
-              placeholder='Enter your email'
-              className="w-full glass-card bg-black/35 text-white rounded-[30px]"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-              disabled={loading}
-            />
+            <div>
+              <input
+                type="password"
+                placeholder='Enter your password'
+                className="w-full glass-card bg-black/35 text-white rounded-[30px]"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                disabled={loading}
+              />
+            </div>
           </div>
 
-          <div>
-            <input
-              type="password"
-              placeholder='Enter your password'
-              className="w-full glass-card bg-black/35 text-white rounded-[30px]"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              required
+          <div className="flex-grow flex items-end mb-4 ">
+            <button 
+              type="submit" 
+              className="space-button w-full hover:nebula-glow"
               disabled={loading}
-            />
+            >
+              {loading ? 'Signing In...' : 'Sign In'}
+            </button>
           </div>
-
-          <button 
-            type="submit" 
-            className="space-button w-full"
-            disabled={loading}
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
 
           <div className="flex items-center justify-center text-[10px]">
             <Link to="/forgot-password" className="text-white hover:text-nebula-glow transition-colors">
