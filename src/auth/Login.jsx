@@ -1,10 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
 
 import Footer from '../components/Footer';
 
 const Login = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Animate welcome text
+    gsap.fromTo('.welcome-text', 
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.5,delay: 0.5, ease: 'power2.out' }
+    );
+
+    // Animate glass card
+    gsap.fromTo('.glass-card',
+      { opacity: 0, scale: 0.95 },
+      { opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)' }
+    );
+
+    // Animate black box
+    gsap.fromTo('.black-box',
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 1, delay: 1, ease: 'back.out' }
+    );
+  }, []);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -38,7 +59,7 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center flex-col mt-[-5vh]">
-      <h2 className="text-white text-3xl font-bold mb-12 mt-[-2rem]">Welcome</h2>
+      <h2 className="welcome-text text-white text-3xl font-bold mb-12 mt-[-2rem]">Welcome</h2>
 
       {/* Glass card container */}
       <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative">
@@ -49,7 +70,7 @@ const Login = () => {
         )}
 
         {/* Black box container with signup link*/}
-        <div className='w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
+        <div className='black-box w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 opacity-0'>
           <h1 className='text-gray-700 text-xl'>"No account yet"</h1>
           <Link to="/register">
             <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
