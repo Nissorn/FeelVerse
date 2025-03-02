@@ -72,15 +72,36 @@ const Login = () => {
         {/* Black box container with signup link*/}
         <div className='black-box w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 opacity-0'>
           <h1 className='text-gray-700 text-xl'>"No account yet"</h1>
-          <Link to="/register">
-            <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
-                Yes
-            </button>
-          </Link>
+          <button 
+            onClick={() => {
+              // Animate black box down with smoother transition
+              gsap.to('.black-box', {
+                y: '55vh',
+                duration: 1.6,
+                ease: 'power4.inOut' // Changed to power4 for faster acceleration/deceleration
+              });
+              
+              // Fade out login form
+              gsap.to('.login-form', {
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.inOut',
+                delay: 0.1,
+                onComplete: () => {
+                  setTimeout(() => {
+                    navigate('/register');
+                  }, 800); // Add 800ms delay to match the animation duration
+                }
+              });
+            }} 
+            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors"
+          >
+            Yes
+          </button>
           
         </div>
         {/* Form Container  */}
-        <form onSubmit={handleSubmit} className="flex flex-col mt-[30vh]">
+        <form onSubmit={handleSubmit} className="login-form flex flex-col mt-[30vh]">
           <div className="space-y-4 mb-8">
             <div>
               <label className="block text-sm font-medium text-white mb-1 text-center">Login</label>

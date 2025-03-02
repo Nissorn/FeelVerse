@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
 
 import Footer from '../components/Footer';
 
 const Register = () => {
+  useEffect(() => {
+    // Animate form elements
+    gsap.fromTo('.register-form',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out'}
+    );
+
+    // Animate title
+    gsap.fromTo('.register-title',
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+    );
+  }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -17,7 +32,7 @@ const Register = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center flex-col mt-[-5vh]">
-      <h2 className="text-gradient text-3xl font-bold mb-12 mt-[-2rem]">Join the space</h2>
+      <h2 className="register-title text-gradient text-3xl font-bold mb-12 mt-[-2rem]">Join the space</h2>
       {/* Glass Card Container */}
       <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative">
         {/* Black box container*/}
@@ -30,7 +45,7 @@ const Register = () => {
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col">
+        <form onSubmit={handleSubmit} className="register-form flex flex-col opacity-0">
           <div className="space-y-4 mb-8">
             <div>
               <label className="block text-sm font-medium text-white mb-3 mt-3 text-center">Register</label>
@@ -72,13 +87,6 @@ const Register = () => {
               Sign Up
             </button>
           </div>
-
-          {/* <p className="text-center text-sm text-gray-400">
-            Already have an account?{' '}
-            <Link to="/login" className="text-space-nebula hover:text-space-star transition-colors">
-              Sign In
-            </Link>
-          </p> */}
         </form>
       </div>
       <Footer/>

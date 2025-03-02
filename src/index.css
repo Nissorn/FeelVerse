@@ -39,6 +39,21 @@
   .nebula-glow::before {
     @apply content-[''] absolute -inset-1 bg-space-nebula/30 blur rounded-xl -z-10;
   }
+
+  /* Input styling */
+  input {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  input:focus {
+    @apply outline-none ring-2 ring-space-nebula/50 ring-offset-2 ring-offset-black/50;
+    box-shadow: 0 0 15px theme('colors.space.nebula');
+    transform: translateY(-2px);
+  }
+
+  input:hover {
+    @apply bg-black/50;
+  }
 }
 
 @layer utilities {
