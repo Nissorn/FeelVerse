@@ -18,8 +18,27 @@ const Home = () => {
         {/* Main content area */}
         <div className="relative w-full h-full overflow-hidden">
           {/* Decorative circles */}
-          <div className="absolute top-[10vh] right-[calc(50%-80px)] w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 opacity-80 shadow-[0_0_50px_10px_rgba(255,255,255,0.3)] animate-pulse"></div>
-          <div className="absolute bottom-[5vh] left-[calc(50%-160px)] w-32 h-32 rounded-full bg-gradient-to-tr from-pink-500 to-orange-500 opacity-80 shadow-[0_0_50px_10px_rgba(255,255,255,0.3)] animate-pulse"></div>
+          {/* Interactive circle buttons */}
+          <button 
+            className="absolute top-[10vh] right-[calc(50%-80px)] w-20 h-20 rounded-full 
+                     bg-gradient-to-tr from-[#EBE0FF] from-5% via-[#8B8B8B] via-5% to-[#1c1390] to-100% 
+                     opacity-100
+                     hover:bg-gradient-to-tr hover:from-[#FFFFFF] hover:via-[#EBE0FF] hover:to-[#627cf3]
+                     hover:scale-110 hover:shadow-[0_0_60px_15px_rgba(255,255,255,0.4)]
+                     active:scale-95 transition-all duration-300 cursor-pointer"
+            onClick={() => console.log('Top circle clicked')}
+            aria-label="Top circle button"
+          ></button>
+          <button 
+            className="absolute bottom-[5vh] left-[calc(50%-175px)] w-32 h-32 rounded-full 
+                     bg-gradient-to-tr from-[#8B8B8B] from-5% via-[#765ecd] via-5% to-[#716975] to-100% 
+                     opacity-100
+                     hover:bg-gradient-to-tr hover:from-[#A58DFB] hover:via-[#B39CF6] hover:to-[#F1E1F0]
+                     hover:scale-110 hover:shadow-[0_0_60px_15px_rgba(255,255,255,0.4)]
+                     active:scale-95 transition-all duration-300 cursor-pointer"
+            onClick={() => console.log('Bottom circle clicked')}
+            aria-label="Bottom circle button"
+          ></button>
           {/* Add your content here */}
         </div>
       </div>
