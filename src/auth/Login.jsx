@@ -71,7 +71,7 @@ const Login = () => {
 
         {/* Black box container with signup link*/}
         <div className='black-box w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 opacity-0'>
-          <h1 className='text-gray-700 text-xl'>"No account yet"</h1>
+          <h1 className='text-[#4117FF] text-xl'>"No account yet"</h1>
           <button 
             onClick={() => {
               // Animate black box down with smoother transition
@@ -104,7 +104,7 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="login-form flex flex-col mt-[30vh] space-y-4">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-white mb-1 text-center">Login</label>
+              <label className="block text-[20px] font-medium text-white mb-1 text-center">Login</label>
               <input
                 type="email"
                 placeholder='Enter your email'
