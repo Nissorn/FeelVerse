@@ -71,7 +71,7 @@ const Login = () => {
 
         {/* Black box container with signup link*/}
         <div className='black-box w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 opacity-0'>
-          <h1 className='text-gray-700 text-xl'>"No account yet"</h1>
+          <h1 className='text-[#4117FF] text-xl'>"No account yet"</h1>
           <button 
             onClick={() => {
               // Animate black box down with smoother transition
