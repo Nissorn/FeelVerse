@@ -46,9 +46,9 @@ const Register = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="register-form flex flex-col opacity-0">
-          <div className="space-y-4 mb-8">
+          <div className="space-y-4">
             <div>
-              <label className="block text-[20px] font-medium text-white mb-3 mt-3 text-center">Register</label>
+              <label className="block text-[20px] font-medium text-white mb-1 text-center">Register</label>
               <input
                 type="email"
                 placeholder='Enter your email'
@@ -82,7 +82,7 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="flex-grow flex items-end mb-4">
+          <div className="mt-4">
             <button type="submit" className="space-button w-full hover:nebula-glow ">
               Sign Up
             </button>

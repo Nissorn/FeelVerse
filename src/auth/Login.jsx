@@ -90,7 +90,7 @@ const Login = () => {
                 onComplete: () => {
                   setTimeout(() => {
                     navigate('/register');
-                  }, 800); // Add 800ms delay to match the animation duration
+                  }, 800); 
                 }
               });
             }} 
@@ -101,8 +101,8 @@ const Login = () => {
           
         </div>
         {/* Form Container  */}
-        <form onSubmit={handleSubmit} className="login-form flex flex-col mt-[30vh]">
-          <div className="space-y-4 mb-8">
+        <form onSubmit={handleSubmit} className="login-form flex flex-col mt-[30vh] space-y-4">
+          <div className="space-y-4">
             <div>
               <label className="block text-[20px] font-medium text-white mb-1 text-center">Login</label>
               <input
@@ -129,7 +129,7 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="flex-grow flex items-end mb-4 ">
+          <div className="mt-4">
             <button 
               type="submit" 
               className="space-button w-full hover:nebula-glow"
@@ -138,7 +138,6 @@ const Login = () => {
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </div>
-
           {/* <div className="flex items-center justify-center text-[10px]">
             <Link to="/forgot-password" className="text-white hover:text-nebula-glow transition-colors">
               Forgot your Password?
