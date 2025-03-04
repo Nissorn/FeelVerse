@@ -12,7 +12,7 @@ const Home = () => {
   }, [navigate]);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundImage: 'url("/src/assets/home-bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundImage: 'url("/src/assets/home-bg.png")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       {/* Content container */}
       <div className="relative w-[100vw] h-[90vh] max-w-4xl flex items-center justify-center bg-black/0 rounded-lg p-4">
         {/* Main content area */}
