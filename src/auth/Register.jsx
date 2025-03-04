@@ -48,7 +48,7 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="register-form flex flex-col opacity-0">
           <div className="space-y-4 mb-8">
             <div>
-              <label className="block text-sm font-medium text-white mb-3 mt-3 text-center">Register</label>
+              <label className="block text-[20px] font-medium text-white mb-3 mt-3 text-center">Register</label>
               <input
                 type="email"
                 placeholder='Enter your email'
