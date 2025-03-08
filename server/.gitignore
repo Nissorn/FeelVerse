@@ -1,0 +1,44 @@
+# Node Modules (dependencies ไม่ต้องเก็บใน Git)
+node_modules/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables (ข้อมูลสำคัญ เช่น API Keys, Database URLs)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs (ไฟล์ log ต่าง ๆ ที่สร้างขึ้นตอนรัน backend)
+logs/
+*.log
+npm-debug.log
+yarn-debug.log
+pnpm-debug.log
+
+# Build & Cache (ไฟล์ที่ถูก Compile หรือ Cache)
+dist/
+build/
+.cache/
+
+# Database (MongoDB dump หรือ database local)
+dump/
+data/
+*.sqlite
+*.sqlite3
+
+# Debugging / Profiler
+.vscode/
+*.swp
+*.swo
+
+# Docker (ถ้าใช้ Docker)
+docker-compose.override.yml
+.dockerignore
+
+# Operating System (ไฟล์ขยะจาก macOS และ Windows)
+.DS_Store
+Thumbs.db
+Desktop.ini
