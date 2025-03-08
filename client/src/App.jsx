@@ -6,6 +6,7 @@ import Login from './auth/Login.jsx';
 import Register from './auth/Register.jsx';
 import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
+import Note from './components/Note.jsx';
 
 function App() {
   useEffect(() => {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
             <Route path="/solar" element={<Solar />} />
+            <Route path="/note/:date" element={<Note />} />
           </Routes>
         </div>
       </div>
