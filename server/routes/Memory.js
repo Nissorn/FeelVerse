@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/memory', (req, res) => {
-    res.send('hello9999')
-    
-})
+//import controller
+const { create } = require('../src/controllers/Memory');
+console.log(create)
+router.get('/Memory',create)
 
 module.exports=router;

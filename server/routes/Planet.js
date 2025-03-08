@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/planet', (req, res) => {
-    res.send('hello5555')
-    
-})
+//import controller
+const { create } = require('../src/controllers/Planet');
+router.get('/Planet',create)
 
 module.exports=router;
