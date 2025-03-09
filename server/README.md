@@ -1,19 +1,13 @@
-
-## Getting Started
-
-1. Clone the repository:
-```bash
-git clone [your-repository-url]
-cd FeelVerse
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-ืnode sever.js
-```
-
+## 🔧 Running the Backend (Server)
+1. Navigate to the server directory:  
+   ```bash
+   cd server
+   ```
+2. Install dependencies:  
+   ```bash
+   npm i
+   ```
+3. Start the server:  
+   ```bash
+   node server.js
+   ```
