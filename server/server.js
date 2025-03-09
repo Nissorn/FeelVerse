@@ -5,9 +5,14 @@ const cors =require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const { readdirSync } = require('fs');
+const connectDB = require('./src/config/db'); 
+
+
 
 
 const app = express();
+//connectDB
+connectDB()
 
 
 //middleware
@@ -21,5 +26,5 @@ readdirSync('./routes')
    
 
 
-const port = 5000 || 8000;
+const port = process.env.PORT
 app.listen(port, () => console.log(`Server is Running on port ${port}`));
