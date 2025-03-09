@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Home = () => {
             onClick={() => console.log('Top circle clicked')}
             aria-label="Top circle button"
           ></button>
+          <Link to="/Notepad">
           <button 
             className="absolute bottom-[calc(50%-37vh)] left-[calc(50%-20vh)] w-20 h-20 rounded-full 
                      bg-gradient-to-tr from-[#8B8B8B] from-5% via-[#765ecd] via-5% to-[#716975] to-100% 
@@ -39,6 +41,7 @@ const Home = () => {
             onClick={() => console.log('Bottom circle clicked')}
             aria-label="Bottom circle button"
           ></button>
+          </Link>
           {/* Add your content here */}
         </div>
       </div>

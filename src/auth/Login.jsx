@@ -135,7 +135,7 @@ const Login = () => {
               className="space-button w-full hover:nebula-glow"
               disabled={loading}
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {loading ? 'Signing In...' : 'Sign'}
             </button>
           </div>
           {/* <div className="flex items-center justify-center text-[10px]">

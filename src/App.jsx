@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import Login from './auth/Login.jsx';
 import Register from './auth/Register.jsx';
 import Home from './components/Home.jsx';
+import Notepad from './components/Notepad.jsx';
 import Solar from './components/Solar.jsx';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/notepad" element={<Notepad />} />
             <Route path="/solar" element={<Solar />} />
           </Routes>
         </div>
