@@ -42,7 +42,7 @@ const Home = () => {
                      after:content-[''] after:absolute after:-top-16 after:left-1/2 after:-translate-x-1/2
                      after:opacity-0 after:transition-opacity after:duration-300
                      hover:after:opacity-100 hover:after:content-[attr(aria-label)]"
-            onClick={() => navigate('/note')}
+            onClick={() => navigate('/notepad')}
             aria-label="Feel Stars"
           ></button>
           {/* Add your content here */}
