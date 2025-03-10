@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 
 import Footer from '../components/Footer';
+//functions
+import { register } from '../functions/auth';
 
 const Register = () => {
   useEffect(() => {
@@ -24,9 +26,19 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   });
-
+  
+  
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
+    if(formData.password !== formData.confirmPassword){
+      alert("Password not match");
+
+    }else{
+    register(formData)
+      
+    }
     // TODO: Implement registration logic
   };
 
@@ -54,7 +66,7 @@ const Register = () => {
                 placeholder='Enter your email'
                 className="w-full glass-card bg-black/60 text-white focus:bg-nebula-glow rounded-[30px]"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={ (e) => setFormData({ ...formData, email: e.target.value })}
                 required
               />
             </div>
@@ -76,7 +88,7 @@ const Register = () => {
                 placeholder='Confirm your password'
                 className="w-full glass-card bg-black/60 text-white rounded-[30px]"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                onChange={ (e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 required
               />
             </div>

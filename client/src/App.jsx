@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import gsap from 'gsap';
 
-import Login from './auth/Login.jsx';
-import Register from './auth/Register.jsx';
+import Login from './page/Login.jsx';
+import Register from './page/Register.jsx';
 import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
 import Note from './components/Note.jsx';
