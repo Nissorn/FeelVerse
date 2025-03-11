@@ -1,30 +1,22 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const cors =require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
-const { readdirSync } = require('fs');
-const connectDB = require('./src/config/db'); 
-
-
-
+import express from 'express';
+import cors from "cors";
+import 'dotenv/config';
+import cookieParser from "cookie-parser";
+import connectDB from './config/mongodb.js';
+import authRouter from './routes/authRoutes.js'
 
 const app = express();
-//connectDB
-connectDB()
+const port = process.env.PORT || 4000
+connectDB();
 
-
-//middleware
-app.use(morgan("dev"));
-app.use(bodyParser.json({ limit: "2mb"}));
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({credentials: true}))
 app.use(cors());
+app.use(express.json());
 
-//Route
-readdirSync('./routes')
-    .map((r) => app.use('/api', require('./routes/' + r)));
-   
+//API Endpoints
+app.get('/',(req,res) => res.send("API SUSU"));
+app.use('/api/auth', authRouter)
 
-
-const port = process.env.PORT
 app.listen(port, () => console.log(`Server is Running on port ${port}`));

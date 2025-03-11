@@ -6,6 +6,7 @@ pnpm-lock.yaml
 
 
 # Environment variables (ข้อมูลสำคัญ เช่น API Keys, Database URLs)
+.env
 .env.local
 .env.development
 .env.test
