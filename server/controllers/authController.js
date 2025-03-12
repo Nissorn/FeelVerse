@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
+import transporter  from '../config/nodemailer.js';
 
 export const register =async (req,res) =>{
 
@@ -27,8 +28,16 @@ export const register =async (req,res) =>{
             'none' : 'strict',
             maxAge : 7 * 24 * 60 * 60 * 1000
         });
-       
-
+        //Semding email
+        const  mailOption = {
+            from:process.env.SENDER_EMAIL,
+            to: email,
+            subject:'Welcome to feelverse',
+            text:`Welcome to feelverse,You account has been created with email id: ${email}`
+        }
+        await transporter.sendMail(mailOption);
+        
+        return res.json({success:true});
     }catch(error){
         res.json({success:false, message: error.message})
     }
