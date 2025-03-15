@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
 const Notepad = () => {
   const [showSquare, setShowSquare] = useState(false);
   const [text, setText] = useState('');
+  const squareRef = useRef(null);
+
+  useEffect(() => {
+    if (showSquare) {
+      gsap.fromTo(squareRef.current, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5 });
+    }
+  }, [showSquare]);
 
   const handleImageClick = () => {
     setShowSquare(true);
@@ -15,7 +23,7 @@ const Notepad = () => {
 
   const handleTurnInClick = (e) => {
     e.stopPropagation();
-    alert('Turned in!');
+    alert('Turned in');
   };
 
   const handleTextChange = (e) => {
@@ -38,7 +46,7 @@ const Notepad = () => {
         >
           {showSquare && (
             <>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 h-3/4 bg-[#d4d4d4] border border-black flex flex-col items-center justify-center">
+              <div ref={squareRef} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 h-3/4 bg-[#d4d4d4] border border-black flex flex-col items-center justify-center">
                 <textarea //Text area
                   className="w-full h-full p-2 bg-transparent border-none resize-none focus:outline-none text-black"
                   value={text}
