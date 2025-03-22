@@ -6,12 +6,27 @@ export const AppContextProvider = (props)=>{
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [isLoggedin,setIsLoggedin] = useState(false)
-    const [userData,setserData] = useState(false)
+    const [userData,setUserData] = useState(false)
+
+    const getUserData = async ()=>{
+        try{
+            const{data} = await axios.post(backendUrl+'/api/user/login')
+            data.success ? setUserData(data.userData): toast.error(data.message)
+
+        }catch (error){
+            toast.error(data.message)
+        }
+
+    }
+
+    console.log("Backend URL:", backendUrl);
+
 
     const value ={
         backendUrl,
         isLoggedin,setIsLoggedin,
-        userData,setserData
+        userData,setUserData,
+        getUserData
 
     }
     return (

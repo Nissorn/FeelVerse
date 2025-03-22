@@ -10,9 +10,10 @@ import axios from 'axios';
 const Login = () => {
   const navigate = useNavigate();
 
-  const {backendUrl,setIsLogin} = useContext(AppContext)
+  const {backendUrl,setIsLoggedin,getUserData} = useContext(AppContext)
 
   useEffect(() => {
+    
     // Animate welcome text
     gsap.fromTo('.welcome-text', 
       { opacity: 0, y: -20 },
@@ -52,6 +53,8 @@ const Login = () => {
 
       if(data.success){
         console.log("complete")
+        setIsLoggedin(true)
+        getUserData()
         navigate('/home')
       } else {
         throw new Error('Invalid email or password');

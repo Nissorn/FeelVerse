@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import gsap from 'gsap';
-
 import Login from './auth/Login.jsx';
 import EmailVerify from './auth/EmailVerify.jsx';
+import ResetPassword from './auth/ResetPassword.jsx';
 import Register from './auth/Register.jsx';
 import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
@@ -30,6 +30,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/email-verify" element={<EmailVerify />} />
+            <Route path="/ResetPassword " element={<ResetPassword  />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
             <Route path="/solar" element={<Solar />} />
