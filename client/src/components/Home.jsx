@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    if (!isAuthenticated) {
-      navigate('/');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const isAuthenticated = localStorage.getItem('isAuthenticated');
+  //   if (!isAuthenticated) {
+  //     navigate('/');
+  //   }
+  // }, [navigate]);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundImage: 'url("/src/assets/home-bg.png")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -28,7 +28,8 @@ const Home = () => {
                      active:scale-95 transition-all duration-300 cursor-pointer
                      after:content-[''] after:absolute after:-bottom-16 after:left-1/2 after:-translate-x-1/2
                      after:opacity-0 after:transition-opacity after:duration-300
-                     hover:after:opacity-100 hover:after:content-[attr(aria-label)]"
+                     hover:after:opacity-100 hover:after:content-[attr(aria-label)]
+                     animate-pulse"
             aria-label="Verse Point"
             onClick={() => navigate('/solar')}
           ></button>
@@ -41,7 +42,8 @@ const Home = () => {
                      active:scale-95 transition-all duration-300 cursor-pointer
                      after:content-[''] after:absolute after:-top-16 after:left-1/2 after:-translate-x-1/2
                      after:opacity-0 after:transition-opacity after:duration-300
-                     hover:after:opacity-100 hover:after:content-[attr(aria-label)]"
+                     hover:after:opacity-100 hover:after:content-[attr(aria-label)]
+                     animate-pulse"
             onClick={() => navigate('/notepad')}
             aria-label="Feel Stars"
           ></button>
