@@ -73,7 +73,7 @@ const EmailVerify =()=>{
     
     return(
         <div className="flex min-h-screen items-center justify-center">
-            <div className='glass-card p-8 w-1/3 h- '>
+            <div className='glass-card p-8 w-1/3'>
                 <h1 className='text-white font-semibold text-2xl text-center '>Email Verify OTP</h1>         
                 <p className='mt-3 text-center text-xl mb-6 text-indigo-300'>Enter the 6-digit code sent to your email id.</p>
 
