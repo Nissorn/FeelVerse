@@ -7,9 +7,10 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 import { AppContext} from '../context/AppContext'
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-
+  const navigate = useNavigate();
   const {backendUrl,setIsLogin} = useContext(AppContext)
 
   useEffect(() => {
@@ -39,8 +40,6 @@ const Register = () => {
     if(formData.password!== formData.confirmPassword){
       throw new Error('Password Not Match');
     }
-    console.log("CHECKL")
-
     try{
       const {data} = await axios.post(backendUrl+'/api/auth/register',
         {
@@ -50,12 +49,12 @@ const Register = () => {
         });
   
         if(data.success){
-          console.log("TEST");
+          navigate('/email-verify')
         }else{
           console.log(data.message);
         }
     }catch(err){
-        setError(err.message);
+        console.log(err.message);
     }
   };
 
