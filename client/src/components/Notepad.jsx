@@ -1,16 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { gsap } from 'gsap';
 
 const Notepad = () => {
   const [showSquare, setShowSquare] = useState(false);
   const [text, setText] = useState('');
+  const [showEmojis, setShowEmojis] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState('');
+  const [hovered, setHovered] = useState(false);
   const squareRef = useRef(null);
 
-  useEffect(() => {
-    if (showSquare) {
-      gsap.fromTo(squareRef.current, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5 });
-    }
-  }, [showSquare]);
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
 
   const handleImageClick = () => {
     setShowSquare(true);
@@ -30,19 +35,36 @@ const Notepad = () => {
     setText(e.target.value);
   };
 
+  const handleEmojiClick = (e) => {
+    e.stopPropagation();
+    setShowEmojis(!showEmojis);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    setSelectedEmoji(emoji);
+    setShowEmojis(false);
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black">
-      <div className="group relative w-[90vw] h-[90vh] max-w-4xl flex items-center justify-center rounded-lg">
-        <div className={`relative w-full h-full rounded-lg transition-all duration-300 ease-in-out ${ //Background image
+      <div
+        className="group relative w-[90vw] h-[90vh] max-w-4xl flex items-center justify-center rounded-lg"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleImageClick}
+      >
+        <div
+          className={`relative w-full h-full rounded-lg transition-all duration-300 ease-in-out ${
             !showSquare ? 'group-hover:shadow-glow group-hover:scale-105' : ''
           }`}
           style={{
-            backgroundImage: 'url("/src/assets/note_page1.png")',
+            backgroundImage: hovered
+              ? 'url("/src/assets/note_page2.png")'
+              : 'url("/src/assets/note_page1.png")',
             backgroundSize: 'contain',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }}
-          onClick={handleImageClick}
         >
           {showSquare && (
             <>
@@ -66,6 +88,27 @@ const Notepad = () => {
               >
                 Turn in
               </button>
+
+              <button
+                className="absolute top-24 right-80 transform -translate-x-1/2 bg-[#000000] text-black rounded-full px-2 py-2"
+                onClick={handleEmojiClick}
+              >
+                {selectedEmoji || 'Emoji'}
+              </button>
+
+              {showEmojis && (
+                <div className="absolute top-20 right-0 bg-[#d4d4d4] border border-black rounded p-2">
+                  {['💓', '❤️‍🔥', '🔥', '😀', '😨', '💔'].map((emoji) => (
+                    <button
+                      key={emoji}
+                      className="text-2xl m-1"
+                      onClick={() => handleEmojiSelect(emoji)}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
             </>
           )}
         </div>
