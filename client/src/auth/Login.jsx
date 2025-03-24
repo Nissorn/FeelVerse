@@ -11,9 +11,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const {backendUrl,setIsLoggedin,getUserData} = useContext(AppContext)
-
+  
   useEffect(() => {
-    
+    localStorage.setItem('isAuthenticated', false);
     // Animate welcome text
     gsap.fromTo('.welcome-text', 
       { opacity: 0, y: -20 },
@@ -54,7 +54,7 @@ const Login = () => {
       if(data.success){
         console.log("complete")
         setIsLoggedin(true)
-        getUserData()
+        localStorage.setItem('isAuthenticated', true);
         navigate('/home')
       } else {
         throw new Error('Invalid email or password');

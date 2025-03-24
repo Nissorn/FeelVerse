@@ -5,9 +5,9 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 import AppContext from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const EmailVerify =()=>{
-
     const inputRefs = React.useRef([])
     const navigate = useNavigate();
 
@@ -48,6 +48,7 @@ const EmailVerify =()=>{
             if(data.success){
                 console.log("OTP SUCCESS");
                 getUserData()
+                localStorage.setItem('isAuthenticated', true);
                 navigate('/home')
             }else{
                 alert("OTP WORNG");
@@ -58,6 +59,7 @@ const EmailVerify =()=>{
     }
 
     const sendOTP = async ()=>{
+        axios.defaults.withCredentials=true;
         try{    
           const {data} = await axios.post(backendUrl+'/api/auth/send-verify-otp')
             if(data.success){

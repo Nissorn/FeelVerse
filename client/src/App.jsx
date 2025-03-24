@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import Login from './auth/Login.jsx';
@@ -9,6 +9,13 @@ import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
 import Note from './components/Note.jsx';
 import Notepad from './components/Notepad.jsx';
+
+const ProtectedRoute = () => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  console.log("ProtectedRoute checked. isAuthenticated =", isAuthenticated);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+};
+
 function App() {
   useEffect(() => {
     // Initialize GSAP animations
@@ -28,14 +35,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/email-verify" element={<EmailVerify />} />
-            <Route path="/ResetPassword" element={<ResetPassword/>} />
             <Route path="/register" element={<Register />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/solar" element={<Solar />} />
-            <Route path="/note/:date" element={<Note />} />
-            <Route path="/notepad" element={<Notepad />} />
-            
+            <Route path="/email-verify" element={<EmailVerify />} />
+
+              <Route element={<ProtectedRoute />}>
+                <Route path="/ResetPassword" element={<ResetPassword/>} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/solar" element={<Solar />} />
+                <Route path="/note/:date" element={<Note />} />
+                <Route path="/notepad" element={<Notepad />} />
+              </Route>
           </Routes>
         </div>
       </div>

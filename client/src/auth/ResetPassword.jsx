@@ -101,7 +101,7 @@ const ResetPassword =()=>{
             
             if(data.success){
                 console.log("Reset Password Complete");
-                navigate('/home');
+                navigate('/');
             }
         }catch{
         }
