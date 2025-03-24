@@ -8,6 +8,7 @@ import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
 import Note from './components/Note.jsx';
 import Notepad from './components/Notepad.jsx';
+import Story from './components/Story.jsx';
 
 function App() {
   useEffect(() => {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/solar" element={<Solar />} />
             <Route path="/note/:date" element={<Note />} />
             <Route path="/notepad" element={<Notepad />} />
+            <Route path="/story" element={<Story />} />
           </Routes>
         </div>
       </div>
