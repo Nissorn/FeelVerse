@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 import { Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
 import Footer from '../components/Footer';
+import axios from 'axios';
+
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const {backendUrl,setIsLoggedin,getUserData} = useContext(AppContext)
+
   useEffect(() => {
+    
     // Animate welcome text
     gsap.fromTo('.welcome-text', 
       { opacity: 0, y: -20 },
@@ -26,27 +32,30 @@ const Login = () => {
       { opacity: 1, y: 0, duration: 1, delay: 1, ease: 'back.out' }
     );
   }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
     try {
-      // Here you would typically make an API call to your backend
-      // For demonstration, we'll simulate an authentication check
-      if (formData.email === 'demo@example.com' && formData.password === 'password123') {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        // Store auth token or user data in localStorage/context
-        localStorage.setItem('isAuthenticated', 'true');
-        navigate('/home');
+      e.preventDefault();
+      setError('');
+      setLoading(true);
+      const  {data} = await axios.post(backendUrl+'/api/auth/login', {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if(data.success){
+        console.log("complete")
+        setIsLoggedin(true)
+        getUserData()
+        navigate('/home')
       } else {
         throw new Error('Invalid email or password');
       }
@@ -98,8 +107,8 @@ const Login = () => {
           >
             Yes
           </button>
+          </div>
           
-        </div>
         {/* Form Container  */}
         <form onSubmit={handleSubmit} className="login-form flex flex-col mt-[30vh] space-y-4">
           <div className="space-y-4">
