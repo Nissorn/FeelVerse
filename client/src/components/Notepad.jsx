@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useContext } from 'react';
 import { gsap } from 'gsap';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 
 const Notepad = () => {
   const [showSquare, setShowSquare] = useState(false);
@@ -12,6 +15,9 @@ const Notepad = () => {
   const [hovered, setHovered] = useState(false);
   const squareRef = useRef(null);
   const [datevalue, setValue] = React.useState(null);
+
+
+  const {backendUrl,setIsLoggedin,getUserData} = useContext(AppContext)
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -34,19 +40,40 @@ const Notepad = () => {
     setShowSquare(false);
   };
 
-  const handleTurnInClick = (e) => {
+  const handleTurnInClick = async (e) => {
     e.stopPropagation();
-
+    if (!datevalue || !text || !selectedEmoji) {
+      alert('Please fill in all fields before submitting.');
+      return;
+    }
+  
     
-    console.log(datevalue);
-    console.log(text);
-    console.log(selectedEmoji);
 
-    alert('Turned in');
-    setValue(null);
-    setSelectedEmoji('');
-    setText('');
-    setShowSquare(false);
+    console.log("Date:", datevalue);
+    console.log("Note:", text);
+    console.log("Emoji:", selectedEmoji);
+
+    try {
+      const {data} = await axios.post(backendUrl+'/api/auth/insertnote', {
+          userId,
+          date: datevalue,
+          note: text,
+          emoji: selectedEmoji
+        });
+
+      if (data.success) {
+        alert("Note saved successfully!");
+        setValue(null);
+        setSelectedEmoji('');
+        setText('');
+        setShowSquare(false);
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      console.log("Error saving note:");
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   const handleTextChange = (e) => {
