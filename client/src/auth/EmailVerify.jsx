@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 const EmailVerify =()=>{
+    const location = useLocation();
+    const { Emaildata } = location;
     const inputRefs = React.useRef([])
     const navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const EmailVerify =()=>{
     const sendOTP = async ()=>{
         axios.defaults.withCredentials=true;
         try{    
-          const {data} = await axios.post(backendUrl+'/api/auth/send-verify-otp')
+          const {data} = await axios.post(backendUrl+'/api/auth/send-verify-otp',{email:Emaildata})
             if(data.success){
               console.log("send-verify-otp");
               navigate('/email-verify')
