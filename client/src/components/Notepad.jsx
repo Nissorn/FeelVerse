@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { gsap } from 'gsap';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const Notepad = () => {
   const [showSquare, setShowSquare] = useState(false);
@@ -8,6 +11,7 @@ const Notepad = () => {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [hovered, setHovered] = useState(false);
   const squareRef = useRef(null);
+  const [datevalue, setValue] = React.useState(null);
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -24,11 +28,25 @@ const Notepad = () => {
   const handleCloseClick = (e) => {
     e.stopPropagation();
     setShowSquare(false);
+    setValue(null);
+    setSelectedEmoji('');
+    setText('');
+    setShowSquare(false);
   };
 
   const handleTurnInClick = (e) => {
     e.stopPropagation();
+
+    
+    console.log(datevalue);
+    console.log(text);
+    console.log(selectedEmoji);
+
     alert('Turned in');
+    setValue(null);
+    setSelectedEmoji('');
+    setText('');
+    setShowSquare(false);
   };
 
   const handleTextChange = (e) => {
@@ -75,8 +93,17 @@ const Notepad = () => {
                   onChange={handleTextChange}
                 />
               </div>
+            <div className='absolute top-[20px] left-1/3 ml-8 w-1/5 bg-purple-100 rounded-md'>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={datevalue}
+                  onChange={(newValue) => setValue(newValue)}
+                  renderInput={(params) => <TextField {...params} />}
+                  />
+              </LocalizationProvider>
+            </div>
               <button
-                className="absolute top-4 left-1/3 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
+                className="absolute top-4 right-1/2 mr-24 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
                 onClick={handleCloseClick}
               >
                 Close
@@ -90,14 +117,14 @@ const Notepad = () => {
               </button>
 
               <button
-                className="absolute top-24 right-80 transform -translate-x-1/2 bg-[#000000] text-black rounded-full px-2 py-2"
+                className="absolute top-[20px] left-1/2 ml-16 w-[50px] h-[55px] bg-purple-300 rounded-mdright-0 rounded p-2"
                 onClick={handleEmojiClick}
               >
                 {selectedEmoji || 'Emoji'}
               </button>
 
               {showEmojis && (
-                <div className="absolute top-20 right-0 bg-[#d4d4d4] border border-black rounded p-2">
+                <div className="top-[20px]  ml-8 w-1/5 bg-purple-100 rounded-mdright-0 rounded p-2">
                   {['💓', '❤️‍🔥', '🔥', '😀', '😨', '💔'].map((emoji) => (
                     <button
                       key={emoji}
@@ -111,6 +138,7 @@ const Notepad = () => {
               )}
             </>
           )}
+
         </div>
       </div>
     </div>
