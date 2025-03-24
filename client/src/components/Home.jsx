@@ -1,5 +1,7 @@
-import { useEffect,useState } from 'react';
+import axios from 'axios';
+import { useContext, useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const {backendUrl} = useContext(AppContext)
   const handleOpenModal=()=>setIsModalOpen(true);
   const handleCloseModal=()=>setIsModalOpen(false);
 
@@ -22,9 +25,20 @@ const Home = () => {
     handleCloseModal();
   }
 
-  const handleLogout=()=>{
-    navigate('/');
-    handleCloseModal();
+  const handleLogout= async ()=>{
+    try{
+      const {data} = await axios.post(backendUrl+'/api/auth/logout');
+      if (data.success) {
+        handleCloseModal();
+        alert("Logged out successfully!");
+        navigate('/');
+      } else {
+          alert("Logout failed: " + data.message);
+      }
+    }catch (error) {
+      console.error("Logout error:", error.response?.data?.message || error.message);
+      alert("An error occurred. Please try again.");
+    } 
   }
 
   return (

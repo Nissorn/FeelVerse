@@ -9,7 +9,6 @@ import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
 import Note from './components/Note.jsx';
 import Notepad from './components/Notepad.jsx';
-
 function App() {
   useEffect(() => {
     // Initialize GSAP animations

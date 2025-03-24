@@ -12,8 +12,16 @@ const ResetPassword =()=>{
     const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
-    const {backendUrl,isloggin,userData,getUserData} = useContext(AppContext)
+    const {backendUrl,isloggin,userData,getUserData,sendResetOtp} = useContext(AppContext)
     
+    const [dataEmail,setDataEmail] =useState("");
+    const [dataOTP,setDataOTP] =useState("");
+    const [state,setState]=useState(0);
+
+    const [Passwordcheck, setPasswordcheck] = useState({
+        password: '',
+        confirmPassword: ''
+    });
     
     const handleInput = (e,index)=>{
         if(e.target.value.length > 0 && index < inputRefs.current.length - 1){
@@ -37,28 +45,69 @@ const ResetPassword =()=>{
         })
     }
 
-    const handlesubmit = async (e) =>{
+    const handlesubmitresetPass = async (e) =>{
+        e.preventDefault();
         try{
-            e.preventDefault();
-            const otpArray = inputRefs.current.map(e=>e.value)
-            const otp = otpArray.join('')
-            
-            const {data} = await axios.post(backendUrl+'/api/auth/verify-account',{otp})
-
-            if(data.success){
-                console.log("OTP SUCCESS");
-                getUserData()
-                navigate('/home')
-            }else{
-                console.log("OTP WORNG");
+            const {data} = await axios.post(backendUrl+'/api/auth/send-reset-otp',{ email: dataEmail.toString()})
+            if (data.success) {
+                setState(1);
+                console.log("SENDOTP SUCCESS");
+            } else {
+                console.log("SENDOTP FAILED");
             }
-        }catch(error){
-
+        } catch (error) {
+            console.log("SENDOTP ERROR", error);
         }
     }
 
-    const [dataemail,setDataEmail] =useState();
-    const [state,setState]=useState(0);
+    const handlesubmitOTP = async (e) =>{
+        e.preventDefault();
+        const otpArray = inputRefs.current.map(e=>e.value)
+        const otp = otpArray.join('')
+
+        try{
+            
+            const {data} = await axios.post(backendUrl+'/api/auth/OTPverify',
+                {
+                    email: dataEmail.toString(),
+                    otp: otp
+                })
+            if(data.success){
+                console.log("OTP SUCCESS");
+                setState(2);
+                setDataOTP(otp)
+                // navigate('/home')
+            }else{
+                console.log("OTP WORNG >>",error.response?.data?.message || error.message);
+            }
+        }catch(error){
+            console.log("OTP WORNG :", error.response?.data?.message || error.message);
+        }
+    }
+
+    const handleconfirmPassword = async (e) =>{
+        e.preventDefault();
+
+        if(Passwordcheck.password!==Passwordcheck.confirmPassword){
+            return alert("Password not match");
+        }
+
+        try{
+            const {data} = await axios.post(backendUrl+'/api/auth/reset-password',{
+                email: dataEmail.toString(),
+                otp:dataOTP,
+                newPassword: Passwordcheck.password
+            })
+            
+            if(data.success){
+                console.log("Reset Password Complete");
+                navigate('/home');
+            }
+        }catch{
+        }
+    }
+
+
     return(
         (state===0)?(
             <div className="flex min-h-screen items-center justify-center">
@@ -70,15 +119,21 @@ const ResetPassword =()=>{
                         <input 
                             type="email" 
                             placeholder="Email" 
-                            className='ml-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            value={dataEmail}
+                            className='ml-2 mt-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            onChange={(e) => setDataEmail(e.target.value)}
                         />
                     </div>
                     
-                    <div className="mt-4 flex flex-1 w-full items-center justify-center">
-                        <button type="submit" className="justify-center space-button w-[80%]" onClick={() => setState(1)}>
+
+                    <form onSubmit={handlesubmitresetPass} className="mt-4 flex flex-1 w-full items-center justify-center">
+                        <button
+                            type="submit"
+                            className="justify-center space-button w-[80%]"
+                        >
                             Submit
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         ):(
@@ -98,11 +153,14 @@ const ResetPassword =()=>{
                         ))}
                     </div>
                     
-                    <div className="mt-4 flex flex-1 w-full items-center justify-center">
-                        <button type="submit" className="justify-center space-button w-[80%]" onClick={() => setState(2)}>
+                    <form onSubmit={handlesubmitOTP} className="mt-4 flex flex-1 w-full items-center justify-center">
+                        <button
+                            type="submit"
+                            className="justify-center space-button w-[80%]"
+                        >
                             Submit
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         ):(
@@ -112,17 +170,29 @@ const ResetPassword =()=>{
                     <p className='mt-3 text-center text-xl mb-6 text-indigo-300'>Enter your email address</p>
                     <div className='flex flex-row  items-center justify-start bg-space-blue rounded-3xl'>
                         <input 
-                            type="email" 
+                            type="password" 
                             placeholder="Enter New Password" 
-                            className='ml-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            className='ml-2 mt-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            onChange={(e) => setPasswordcheck({ ...Passwordcheck, password: e.target.value })}
+                        />
+                    </div>
+                    <div className='flex flex-row mt-4 items-center justify-start bg-space-blue rounded-3xl'>
+                        <input 
+                            type="password" 
+                            placeholder="Enter Confirm Password" 
+                            className='ml-2 mt-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            onChange={(e) => setPasswordcheck({ ...Passwordcheck, confirmPassword: e.target.value })}
                         />
                     </div>
                     
-                    <div className="mt-4 flex flex-1 w-full items-center justify-center">
-                        <button type="submit" className="justify-center space-button w-[80%]" onClick={() => setState(0)}>
+                    <form onSubmit={handleconfirmPassword} className="mt-4 flex flex-1 w-full items-center justify-center">
+                        <button
+                            type="submit"
+                            className="justify-center space-button w-[80%]"
+                        >
                             Submit
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         ))

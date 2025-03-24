@@ -50,10 +50,10 @@ const EmailVerify =()=>{
                 getUserData()
                 navigate('/home')
             }else{
-                console.log("OTP WORNG");
+                alert("OTP WORNG");
             }
         }catch(error){
-
+            alert("OTP WORNG");
         }
     }
 
@@ -66,9 +66,9 @@ const EmailVerify =()=>{
             }else{
               console.log(data.message);
             }
-            }catch(err){
-                console.log(err.message);
-            }
+        }catch(err){
+            console.log(err.message);
+        }
     }
     
     return(

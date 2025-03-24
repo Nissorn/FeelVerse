@@ -165,6 +165,33 @@ export const verifyEmail = async (req, res) => {
     }
 };
 
+export const verifyOTPreset = async (req, res) => {
+    const {email,otp} =req.body;
+    if (!email || !otp) {
+        return res.json({ success: false, message: 'Missing details' });
+    }
+    try {
+        const user = await userModel.findOne({ email });
+        console.log(otp)
+        console.log(email)
+        if (!user) {
+            return res.json({ success: false, message: 'User not found' });
+        }
+
+        if (user.resetOtp==='' || user.resetOtp !== otp) {
+            return res.json({ success: false, message: 'Invalid OTP' });
+        }
+
+        if (user.resetOtpExpireAt < Date.now()) {
+            return res.json({ success: false, message: 'OTP expired' });
+        }
+        return res.json({ success: true, message: 'OTP Verify' , email});
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
 
 //check if user is authenticated
 export const isAuthenticated = async(req,res)=>{
