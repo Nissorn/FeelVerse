@@ -5,14 +5,6 @@ import AppContext from '../context/AppContext';
 
 const Home = () => {
   const navigate = useNavigate();
-
-    // useEffect(() => {
-    //   const isAuthenticated = localStorage.getItem('isAuthenticated');
-    //   if (!isAuthenticated) {
-    //     navigate('/');
-    //   }
-    // }, [navigate]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {backendUrl} = useContext(AppContext)

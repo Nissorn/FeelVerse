@@ -14,6 +14,7 @@ const Register = () => {
   const {backendUrl,setIsLogin} = useContext(AppContext)
 
   useEffect(() => {
+    localStorage.setItem('isAuthenticated', false);
     // Animate form elements
     gsap.fromTo('.register-form',
       { opacity: 0, y: 20 },
