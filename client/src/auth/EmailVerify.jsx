@@ -11,6 +11,11 @@ const EmailVerify =()=>{
     const inputRefs = React.useRef([])
     const navigate = useNavigate();
 
+    const loction = useLocation();
+    console.log(loction)
+    const Emailreg = loction.state;
+
+
     axios.defaults.withCredentials = true;
     const {backendUrl,isloggin,userData,getUserData} = useContext(AppContext)
     
@@ -43,32 +48,19 @@ const EmailVerify =()=>{
             const otpArray = inputRefs.current.map(e=>e.value)
             const otp = otpArray.join('')
             
-            const {data} = await axios.post(backendUrl+'/api/auth/verify-account',{otp})
+            console.log(Emailreg);
+            const {data} = await axios.post(backendUrl+'/api/auth/verify-account',{email:Emailreg ,otp:otp})
+            console.log(data);
 
             if(data.success){
                 console.log("OTP SUCCESS");
                 localStorage.setItem('isAuthenticated', true);
-                navigate('/home')
+                navigate('/story')
             }else{
                 alert("OTP WORNG");
             }
         }catch(error){
-            alert("OTP WORNG");
-        }
-    }
-
-    const sendOTP = async ()=>{
-        axios.defaults.withCredentials=true;
-        try{    
-          const {data} = await axios.post(backendUrl+'/api/auth/send-verify-otp',{email:Emaildata})
-            if(data.success){
-              console.log("send-verify-otp");
-              navigate('/email-verify')
-            }else{
-              console.log(data.message);
-            }
-        }catch(err){
-            console.log(err.message);
+            alert("Error : OTP WORNG");
         }
     }
     
@@ -87,8 +79,6 @@ const EmailVerify =()=>{
                         />
                     ))}
                 </div>
-                <button onClick={() => sendOTP()}  className="mb-5 register-form  text-[18px] font-bold  text-blue-500 mt-1 text-center w-full">send OTP</button>
-
       
                 <button type="submit" className="space-button w-full hover:nebula-glow " onClick={handlesubmit}>
                     Veritfy Email

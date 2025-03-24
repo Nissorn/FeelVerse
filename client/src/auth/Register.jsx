@@ -50,7 +50,7 @@ const Register = () => {
         });
   
         if(data.success){
-          navigate('/email-verify',{ Emaildata: formData.email })
+          navigate('/email-verify',{state:formData.email})
         }else{
           console.log(data.message);
         }
