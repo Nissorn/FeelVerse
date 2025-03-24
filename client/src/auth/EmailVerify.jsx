@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 const EmailVerify =()=>{
-    const location = useLocation();
-    const { Emaildata } = location;
     const inputRefs = React.useRef([])
     const navigate = useNavigate();
 
@@ -49,7 +47,6 @@ const EmailVerify =()=>{
 
             if(data.success){
                 console.log("OTP SUCCESS");
-                getUserData()
                 localStorage.setItem('isAuthenticated', true);
                 navigate('/home')
             }else{
