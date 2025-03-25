@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 import transporter  from '../config/nodemailer.js';
-import NotepadModel from "../models/notepadModel.js";
+// import NotepadModel from "../models/notepadModel.js";
 
 export const register =async (req,res) =>{
     const {name,email,password} = req.body;
@@ -240,29 +240,29 @@ export const resetPassword = async(req,res)=>{
     }
 }
 
-export const NotepadData = async(req,res)=>{
-    const {userId,date,note,emoji}=req.body;
-    if(!date || !note || !emoji){
-        return res.json({success:false,message:'date,note,and new emoji are required'});
-    }
-    try{
+// export const NotepadData = async(req,res)=>{
+//     const {userId,date,note,emoji}=req.body;
+//     if(!date || !note || !emoji){
+//         return res.json({success:false,message:'date,note,and new emoji are required'});
+//     }
+//     try{
     
-    const user =await userModel.findOne({userId});
-    if(!user){
-        return res.json({success: false,message:'User not found'});
-    }
+//     const user =await userModel.findOne({userId});
+//     if(!user){
+//         return res.json({success: false,message:'User not found'});
+//     }
 
-    const newNote = new NotepadModel({
-        userId,
-        date,
-        note,
-        emoji
-    });
+//     const newNote = new NotepadModel({
+//         userId,
+//         date,
+//         note,
+//         emoji
+//     });
 
-    await newNote.save();
-    return res.json({ success: true, message: 'Note saved successfully', data: newNote });
+//     await newNote.save();
+//     return res.json({ success: true, message: 'Note saved successfully', data: newNote });
 
-    }catch{
-        return res.json({ success: false, message: error.message });
-    }
-}
+//     }catch{
+//         return res.json({ success: false, message: error.message });
+//     }
+// }

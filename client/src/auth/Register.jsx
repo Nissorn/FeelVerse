@@ -128,9 +128,7 @@ const Register = () => {
               Sign Up
             </button>
           </div>
-        </form>
-        <button onClick={() => console.log("Forgot Password")} className="register-form  text-[15px] font-medium text-blue-500 mt-1 ml-2 text-s">forgot password</button>
-      
+        </form> 
       </div>
       <Footer/>
     </div>

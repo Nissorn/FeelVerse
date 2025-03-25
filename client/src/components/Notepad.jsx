@@ -4,7 +4,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+
 import AppContext from '../context/AppContext';
 
 const Notepad = () => {
@@ -46,20 +46,18 @@ const Notepad = () => {
       alert('Please fill in all fields before submitting.');
       return;
     }
-  
-    
-
     console.log("Date:", datevalue);
     console.log("Note:", text);
     console.log("Emoji:", selectedEmoji);
 
     try {
-      const {data} = await axios.post(backendUrl+'/api/auth/insertnote', {
-          userId,
+      const {data} = await axios.post(backendUrl+'/api/note/insertnote', {
           date: datevalue,
           note: text,
           emoji: selectedEmoji
-        });
+        },{ withCredentials: true });
+
+        console.log("Response:", data);
 
       if (data.success) {
         alert("Note saved successfully!");
