@@ -4,6 +4,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import AppContext from '../context/AppContext';
 
@@ -12,6 +13,7 @@ const Notepad = () => {
   const [text, setText] = useState('');
   const [showEmojis, setShowEmojis] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState('');
+  const [selectedmood, setSelectedmood] = useState('');
   const [hovered, setHovered] = useState(false);
   const squareRef = useRef(null);
   const [datevalue, setValue] = React.useState(null);
@@ -38,6 +40,7 @@ const Notepad = () => {
     setSelectedEmoji('');
     setText('');
     setShowSquare(false);
+    setShowEmojis(false);
   };
 
   const handleTurnInClick = async (e) => {
@@ -49,12 +52,14 @@ const Notepad = () => {
     console.log("Date:", datevalue);
     console.log("Note:", text);
     console.log("Emoji:", selectedEmoji);
+    console.log("mood:", selectedmood);
 
     try {
       const {data} = await axios.post(backendUrl+'/api/note/insertnote', {
           date: datevalue,
           note: text,
-          emoji: selectedEmoji
+          emoji: selectedEmoji,
+          mood: selectedmood
         },{ withCredentials: true });
 
         console.log("Response:", data);
@@ -65,6 +70,7 @@ const Notepad = () => {
         setSelectedEmoji('');
         setText('');
         setShowSquare(false);
+        setShowEmojis(false);
       } else {
         alert("Error: " + data.message);
       }
@@ -83,9 +89,10 @@ const Notepad = () => {
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmojiSelect = (emoji) => {
+  const handleEmojiSelect = (emoji,name) => {
     setSelectedEmoji(emoji);
-    setShowEmojis(false);
+    setSelectedmood(name);
+    setShowEmojis(false)
   };
 
   return (
@@ -118,7 +125,7 @@ const Notepad = () => {
                   onChange={handleTextChange}
                 />
               </div>
-            <div className='absolute top-[20px] left-1/3 ml-8 w-1/5 bg-purple-100 rounded-md'>
+            <div className='absolute top-[20px] left-1/3 ml-8 w-1/5 bg-[#d4d4d4] rounded-md'>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={datevalue}
@@ -142,19 +149,26 @@ const Notepad = () => {
               </button>
 
               <button
-                className="absolute top-[20px] left-1/2 ml-16 w-[50px] h-[55px] bg-purple-300 rounded-mdright-0 rounded p-2"
+                className="absolute top-[20px] left-1/2 ml-16 w-[50px] h-[55px] bg-[#d4d4d4] justify-center rounded-mdright-0 rounded "
                 onClick={handleEmojiClick}
               >
-                {selectedEmoji || 'Emoji'}
+                {selectedEmoji || 'mood'}
               </button>
 
               {showEmojis && (
-                <div className="top-[20px]  ml-8 w-1/5 bg-purple-100 rounded-mdright-0 rounded p-2">
-                  {['💓', '❤️‍🔥', '🔥', '😀', '😨', '💔'].map((emoji) => (
-                    <button
+                <div className="absolute top-[20px] left-[53.6%] w-fit ml-8 bg-[#b1b1b1] rounded-mdright-0 rounded p-2">
+                  {[  {emoji:'💓',name:'Love'},
+                      {emoji:'😂',name:'Joy'},
+                      {emoji:'😟',name:'Worry'},
+                      {emoji:'😡',name:'Angry'}, 
+                      {emoji:'💪',name:'Courage'},
+                      {emoji:'💔',name:'Sadness'},
+                      {emoji:'😏',name:'Chill'}].map(({emoji,name}) => (
+                    <button 
                       key={emoji}
                       className="text-2xl m-1"
-                      onClick={() => handleEmojiSelect(emoji)}
+                      onClick={() => handleEmojiSelect(emoji,name)}
+                      title={name}
                     >
                       {emoji}
                     </button>
