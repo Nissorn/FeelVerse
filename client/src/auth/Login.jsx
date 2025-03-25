@@ -137,7 +137,7 @@ const Login = () => {
               />
             </div>
           </div>
-
+          <button onClick={() => navigate('/ResetPassword')} className="register-form  text-[15px] font-medium text-blue-500 mt-1 ml-2 text-s text-start">forgot password</button>
           <div className="mt-4">
             <button 
               type="submit" 
@@ -147,18 +147,6 @@ const Login = () => {
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </div>
-          {/* <div className="flex items-center justify-center text-[10px]">
-            <Link to="/forgot-password" className="text-white hover:text-nebula-glow transition-colors">
-              Forgot your Password?
-            </Link>
-          </div> */}
-
-          {/*<p className="text-center text-sm text-gray-400">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-space-nebula hover:text-space-star transition-colors">
-              Sign Up
-            </Link>
-          </p>*/}
         </form>
       </div>
       <Footer />

@@ -39,9 +39,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/email-verify" element={<EmailVerify />} />
+            <Route path="/ResetPassword" element={<ResetPassword/>} />
               
               <Route element={<ProtectedRoute />}>
-                <Route path="/ResetPassword" element={<ResetPassword/>} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/solar" element={<Solar />} />
                 <Route path="/note/:date" element={<Note />} />
