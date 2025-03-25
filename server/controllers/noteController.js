@@ -3,7 +3,7 @@ import notepadModel from "../models/notepadModel.js";
 //เพิ่มโน้ตใหม่
 const insertNote = async (req, res) => {
     try {
-        const { userId, note, emoji, date } = req.body;
+        const { userId, note, emoji, date,mood } = req.body;
 
         if (!userId) {
             return res.status(404).json({ success: false, message: "User not found" });
@@ -14,6 +14,7 @@ const insertNote = async (req, res) => {
             note,
             emoji,
             date,
+            mood
         });                                                                                                                     
 
         await newNote.save();
@@ -27,7 +28,7 @@ const insertNote = async (req, res) => {
 //ดึงโน้ตทั้งหมดของผู้ใช้
 const getNotes = async (req, res) => {
     try {
-        const notes = await notepadModel.find({ userId: req.user._id });  // ใช้ NotepadModel แทน Note
+        const notes = await notepadModel.find({ userId});  // ใช้ NotepadModel แทน Note
         res.json({ success: true, data: notes });
 
     } catch (error) {
