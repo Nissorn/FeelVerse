@@ -1,93 +1,88 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-const Note = () => {
-  const navigate = useNavigate();
-  const { date } = useParams(); // Get the date parameter from the URL
-  const [noteData, setNoteData] = useState(null);
-  const [loading, setLoading] = useState(true);
+import { useState, useEffect,useContext} from 'react';
+import { data, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import AppContext from '../context/AppContext';
+import { FaPenAlt } from "react-icons/fa";
 
   // Define the 7 mood types with their descriptions and colors
   const moodTypes = {
-    love: {
-      name: 'Love',
-      description: 'Represents love, compassion and warmth',
-      color: '#E84A5F' // Warm red/pink
+    Love: {
+      emoji:'💓',
+      description: 'Represents love, compassion, and warmth',
+      color: '#C1292E' // Warm red/pink
     },
-    joy: {
-      name: 'Joy',
-      description: 'Represents joy, fun and bright moments',
+    Joy: {
+      emoji:'😂',
+      description: 'Represents joy, fun, and bright moments',
       color: '#FFC857' // Bright yellow
     },
-    worry: {
-      name: 'Worry',
-      description: 'Represents worry, uncertainty and fear',
+    Worry: {
+      emoji:'😟',
+      description: 'Represents worry, uncertainty, and fear',
       color: '#7B9E89' // Muted green
     },
-    anger: {
-      name: 'Anger',
+    Angry: {
+      emoji:'😡',
       description: 'Represents intense emotions arising from conflict or dissatisfaction',
-      color: '#C1292E' // Deep red
+      color: '#a84A5F' // Deep red
     },
-    determination: {
-      name: 'Determination',
-      description: 'Represents determination, dreams, and inner drive',
-      color: '#5F4BB6' // Purple
-    },
-    courage: {
-      name: 'Courage',
+    Courage: {
+      emoji:'💪',
       description: 'Represents courage in facing fear and obstacles',
       color: '#F26419' // Orange
     },
-    sadness: {
-      name: 'Sadness',
-      description: 'Reflects sadness, loss or the gloomy moments of the day',
+    Sadness: {
+      emoji:'💔',
+      description: 'Reflects sadness, loss, or the gloomy moments of the day',
       color: '#4056A1' // Deep blue
+    },
+    Chill: {
+      emoji:'😏',
+      description: 'Represents relaxation and peace',
+      color: '#A4B6A1' // Light green
     }
   };
 
-  useEffect(() => {
-    // In a real app, this would fetch data from your backend
-    // For now, we'll simulate loading data
-    const fetchNoteData = async () => {
-      setLoading(true);
-      try {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
-        // Mock data - in a real app, this would come from your API
-        const mockData = {
-          date: date,
-          mood: {
-            type: 'joy', // One of the 7 mood types
-            description: moodTypes.joy.description,
-            color: moodTypes.joy.color
-          },
-          notes: [
-            {
-              id: 1,
-              content: 'Today was a great day! I accomplished all my tasks and had time to relax.',
-              timestamp: '2023-05-15T14:30:00Z'
-            },
-            {
-              id: 2,
-              content: 'Evening reflection: Feeling grateful for the small moments of joy today.',
-              timestamp: '2023-05-15T20:45:00Z'
-            }
-          ]
-        };
-        
-        setNoteData(mockData);
-      } catch (error) {
-        console.error('Error fetching note data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  
 
-    if (date) {
-      fetchNoteData();
+const Note = () => {
+  const {backendUrl} = useContext(AppContext)
+  const navigate = useNavigate();
+  const { date } = useParams(); // Get the date parameter from the URL
+  const [noteData, setNoteData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [maxmoods,setMaxmoods]=useState('');
+  const moodColor = moodTypes[maxmoods]?.color || "#888888";
+  const [isEditVisible, setIsEditVisible] = useState(false); // ใช้เพื่อควบคุมการแสดงปุ่ม Edit/Delete
+  
+  const listday = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/note/noteday`, {
+        params: { date },
+        withCredentials: true
+      });
+      console.log("Response Data:", response.data);
+      if (response.data.success) {
+        console.log(response.data);
+        setNoteData(response.data.notes)
+        setMaxmoods(response.data.maxMood)
+        console.log("NoteData : ", noteData);
+        
+      } else {
+        console.error("Failed to fetch summary:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching summary data:", error);
+    } finally {
+      setLoading(false);
     }
+  };
+  
+  useEffect(() => {
+    setLoading(true);
+    console.log("CHECK: " + date.toString());
+    listday();
   }, [date]);
 
   // Format date for display (e.g., "May 15, 2023")
@@ -99,8 +94,32 @@ const Note = () => {
     return dateString;
   };
 
+  const handleEdit = (id) => {
+    alert('Edit note with id:'+ id);
+    // ทำสิ่งที่ต้องการเมื่อกด Edit, เช่นเปิด Modal หรือไปหน้าแก้ไข
+  };
+  
+  const handleDelete = async (id) => {
+    console.log('Delete note with id:'+ id);
+    try{
+        const {data} = await axios.delete(backendUrl+'/api/note/notedelete',{
+          params: { idobj: id },
+          withCredentials: true 
+        });
+        
+        if(data.success){
+          listday();
+        }else{
+          alert("Error: " + data.message);
+        }
+    }catch (error){
+      alert("Error: " + data.message);
+    }
+  };
+
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-start pt-16 bg-black/0 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-start pt-16 bg-black/0 overflow-hidden overflow-y-auto  h-[calc(100vh-120px)]">
+
       {/* Navigation Bar */}
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-transparent backdrop-blur-sm">
         <button
@@ -125,35 +144,45 @@ const Note = () => {
         </button>
       </div>
 
+      <div>
+        <button
+            className="fixed bottom-10 right-[22%] flex justify-between items-center p-5 transition-all duration-300 hover:scale-110 bg-white/20 hover:bg-white/30 rounded-full"
+            onClick={() => setIsEditVisible((prev) => !prev)} // แสดง/ซ่อนปุ่ม Edit/Delete
+        >
+          <FaPenAlt size={30} />
+        </button>
+      </div>
+      
       {/* Main Content */}
-      <div className="w-full max-w-4xl px-4 sm:px-6 py-4">
+      <div className="w-full max-w-4xl mt-5 px-4">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-pulse text-white">Loading...</div>
           </div>
         ) : noteData ? (
+
           <div className="space-y-6 animate-fadeIn">
-            {/* Mood Card */}
+            Mood Card
             <div 
-              className="glass-card p-6 rounded-xl relative overflow-hidden"
+              className={`glass-card p-6 rounded-xl relative overflow-hidden `}
               style={{
-                background: `linear-gradient(135deg, ${noteData.mood.color}40, rgba(28, 19, 144, 0.4))`,
-                boxShadow: `0 0 40px 5px ${noteData.mood.color}30`
+                background: `linear-gradient(135deg, ${moodColor} 0.0001%, rgba(28, 19, 144, 0.1))`,
+                boxShadow: `0 1px 12px ${moodColor}`,
               }}
             >
               <h2 className="text-xl font-bold text-white mb-4">Today's Mood</h2>
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center space-x-3">
                   <div 
-                    className="w-8 h-8 rounded-full" 
-                    style={{ backgroundColor: noteData.mood.color }}
-                  ></div>
-                  <p className="text-white text-lg font-medium">
-                    {moodTypes[noteData.mood.type]?.name || 'Unknown Mood'}
+                    className="w-10 h-10 rounded-full" 
+                    style={{ backgroundColor: moodColor, boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)"}}
+                  > <p className="pt-1 text-white text-lg font-bold text-center mt-1">{moodTypes[maxmoods]?.emoji || "?"}</p></div>
+                  <p className="pt-1 text-white text-lg font-bold">
+                    {maxmoods !== null ? maxmoods   : 'No Mood'}
                   </p>
                 </div>
                 <p className="text-white/80 text-sm italic">
-                  {noteData.mood.description}
+                  {moodTypes[maxmoods]?.description || "You haven't added your mood for today" }
                 </p>
               </div>
             </div>
@@ -162,17 +191,31 @@ const Note = () => {
             <div className="glass-card p-6 rounded-xl">
               <h2 className="text-xl font-bold text-white mb-4">Notes</h2>
               <div className="space-y-4">
-                {noteData.notes.map((note) => (
-                  <div key={note.id} className="p-4 bg-white/10 rounded-lg">
-                    <p className="text-white">{note.content}</p>
-                    <p className="text-white/60 text-xs mt-2">
-                      {new Date(note.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                  </div>
-                ))}
+                
+                
+              {
+                noteData.length > 0 ? (
+                  noteData.map((note) => (
+                    <div key={note._id} className="p-4 text-xl flex flex-row justify-between bg-white/10 rounded-lg">
+                      <p className="text-white">{note.emoji}{"\t"}{note.note}</p>
+                      {isEditVisible && (
+                        <div className="mt-2">
+                          <button className="w-16 bg-slate-400 rounded-md" onClick={() => handleEdit(note._id)}>
+                            Edit
+                          </button>
+                          <button className="w-16 ml-3 bg-red-500 rounded-md" onClick={() => handleDelete(note._id)}>
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-white/60 text-center">No notes found</p>
+                )
+              }
               </div>
             </div>
-
             {/* Add New Note Button */}
             <div className="flex justify-center mt-6">
               <button 

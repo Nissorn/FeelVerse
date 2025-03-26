@@ -15,7 +15,8 @@ const notepadSchema = new mongoose.Schema({
     },
     note: { type: String, required: true },
     emoji: { type: String, required: true },
-    mood: {type: String, required: true }
+    mood: {type: String, required: true },
+    score: {type: Number, required: true }
 });
 
 const notepadModel = mongoose.models.notepad || mongoose.model('notepad', notepadSchema);
