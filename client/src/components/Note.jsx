@@ -1,8 +1,14 @@
-import { useState, useEffect,useContext} from 'react';
+import React,{ useState, useEffect,useContext,useRef} from 'react';
 import { data, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import AppContext from '../context/AppContext';
 import { FaPenAlt } from "react-icons/fa";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import dayjs from "dayjs";
+dayjs.extend(customParseFormat);
 
   // Define the 7 mood types with their descriptions and colors
   const moodTypes = {
@@ -55,6 +61,112 @@ const Note = () => {
   const moodColor = moodTypes[maxmoods]?.color || "#888888";
   const [isEditVisible, setIsEditVisible] = useState(false); // ใช้เพื่อควบคุมการแสดงปุ่ม Edit/Delete
   
+  
+  //editnote
+  const [isModalEdit,setIsModalEdit]=useState(false);
+  const squareRef = useRef(null);
+  const OpenModalEdit=()=>setIsModalEdit(true);
+  const [text,setText]=useState('');
+  const [showEmojis, setShowEmojis] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState('');
+  const [selectedmood, setSelectedmood] = useState('');
+  const [selectedscore, setSelectedscore] = useState(0);
+  const [datevalue, setValue] = React.useState(null);
+  const [idtarget,setIdtarget]= useState('');
+
+  const handleTextChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleTurnInClick = async (e) => {
+      e.stopPropagation();
+      if (!datevalue || !text || !selectedEmoji) {
+        alert('Please fill in all fields before submitting.');
+        return;
+      }
+      const formattedDate = dayjs(datevalue).format("YYYY-MM-DD");
+      console.log("Id target:", idtarget);
+      console.log("Date:", formattedDate);
+      console.log("Note:", text);
+      console.log("Emoji:", selectedEmoji);
+      console.log("mood:", selectedmood);
+      console.log("score:", selectedscore);
+  
+      try {
+        const { data } = await axios.put(backendUrl + '/api/note/updatenodeobj', {     // ID of the note to be updated
+            date: formattedDate,  // Formatted date
+            note: text,           // Note text
+            emoji: selectedEmoji, // Selected emoji
+            mood: selectedmood,   // Selected mood
+            score: selectedscore, // Selected score
+            withCredentials: true // Ensure the session or cookie is used
+        },{params: { idobj: idtarget }});
+
+        console.log("Response:", data);
+
+        if (data.success) {
+            alert("Note saved successfully!");
+            // Reset state values after success
+            setValue(null);
+            setSelectedEmoji('');
+            setSelectedscore(0);
+            setText('');
+            setShowEmojis(false);
+            listday();
+        } else {
+            alert("Error: " + data.message || 'Something went wrong');
+        }
+      } catch (error) {
+        console.log("Error saving note:", error.message);  // Fix: Log error.message instead of data.message
+        alert("Something went wrong. Please try again.");
+      }
+  };
+
+  const handleEmojiClick = (e) => {
+    setShowEmojis(!showEmojis);
+  };
+
+  const CloseModalEdit=(e)=>{
+    setIsModalEdit(false);
+    setSelectedEmoji('');
+    setSelectedscore(0);
+    setText('');z
+    setShowEmojis(false);
+  }
+    const handleEmojiSelect = (emoji,name,score) => {
+    setSelectedEmoji(emoji);
+    setSelectedmood(name);
+    setSelectedscore(score);
+    setShowEmojis(false)
+  };
+
+  const handleEdit = async (id) => {
+    console.log('get note with id:'+ id);
+    setIdtarget(id);
+    try{
+        const response= await axios.get(backendUrl+'/api/note/notedobjid',{
+          params: { idobj: id },
+          withCredentials: true 
+        });
+        console.log("API Response:", response);
+        if(response.data.success){
+          const formattedDate = dayjs(response.data.note.date, "DD-MM-YYYY");
+          setValue(formattedDate);
+
+          setText(response.data.note.note);
+          setSelectedEmoji(response.data.note.emoji);
+          setSelectedmood(response.data.note.mood);
+          setSelectedscore(response.data.note.score);
+          console.log("Get complete: ", response.data);
+          OpenModalEdit();
+        }else{
+          alert("Error: " + data.message);
+        }
+    }catch (error){
+      alert("Error: " + data.message);
+    }
+  };
+  
   const listday = async () => {
     setLoading(true);
     try {
@@ -88,17 +200,9 @@ const Note = () => {
   // Format date for display (e.g., "May 15, 2023")
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    
-    // For now, just return the date parameter
-    // In a real app, you would parse and format it properly
     return dateString;
   };
 
-  const handleEdit = (id) => {
-    alert('Edit note with id:'+ id);
-    // ทำสิ่งที่ต้องการเมื่อกด Edit, เช่นเปิด Modal หรือไปหน้าแก้ไข
-  };
-  
   const handleDelete = async (id) => {
     console.log('Delete note with id:'+ id);
     try{
@@ -216,19 +320,6 @@ const Note = () => {
               }
               </div>
             </div>
-            {/* Add New Note Button */}
-            <div className="flex justify-center mt-6">
-              <button 
-                className="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm
-                         flex items-center justify-center transition-all duration-300 hover:scale-105 text-white"
-                onClick={() => {
-                  // In a real app, this would open a form to add a new note
-                  alert('Add new note functionality would go here');
-                }}
-              >
-                Add New Note
-              </button>
-            </div>
           </div>
         ) : (
           <div className="flex justify-center items-center h-64">
@@ -246,6 +337,71 @@ const Note = () => {
           100% { opacity: 1; }
         }
       `}</style>
+        {isModalEdit && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-60 ">
+            <button className="w-full h-full absolute bg-transparent" onClick={CloseModalEdit}></button>
+            <div className="glass-card rounded-2xl shadow-lg p-6 space-y-4">
+              <div className='w-[400px] h-[600px]'>
+                <div className='flex flex-row  justify-between'>
+                  <button className=" bg-[#d4d4d4] text-black rounded px-4 py-2" onClick={CloseModalEdit}>
+                    Close
+                  </button>
+                  <div className='  bg-[#d4d4d4] rounded-md'>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={datevalue}
+                        onChange={(newValue) => setValue(newValue)}
+                        format="DD-MM-YYYY"
+                        renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                  </div>
+                  <button className="w-[50px] h-[55px] bg-[#d4d4d4] justify-center rounded-mdright-0 rounded " onClick={handleEmojiClick}>
+                      {selectedEmoji || 'mood'}
+                  </button>
+                </div>
+                
+                <div ref={squareRef} className="w-full h-[82%] mt-2 bg-[#d4d4d4] border border-black flex flex-col items-center justify-center">
+                    <textarea //Text area
+                      className="w-full h-full p-2 bg-transparent border-none resize-none focus:outline-none text-black"
+                      value={text}
+                      onChange={handleTextChange}
+                    />
+                  </div>
+                  
+
+                  <button
+                    className="mt-2 bg-[#d4d4d4] text-black rounded px-4 h-10 w-full"
+                    onClick={handleTurnInClick}
+                  >
+                    Turn in
+                  </button>
+                  {showEmojis && (
+                    <div className=" items-start flex absolute top-[20px] left-[70%] ">
+                    <div className="bg-[#b1b1b1] rounded p-2">
+                      {[  {emoji:'💓',name:'Love',score : 100},
+                          {emoji:'😂',name:'Joy',score : 77},
+                          {emoji:'😟',name:'Worry',score : 40},
+                          {emoji:'😡',name:'Angry',score : 30}, 
+                          {emoji:'💪',name:'Courage',score : 68},
+                          {emoji:'💔',name:'Sadness',score : 20},
+                          {emoji:'😏',name:'Chill',score : 50}].map(({emoji,name,score}) => (
+                        <button 
+                          key={emoji}
+                          className="text-2xl  flex-col"
+                          onClick={() => handleEmojiSelect(emoji,name,score)}
+                          title={name}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                    </div>
+                  )}
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

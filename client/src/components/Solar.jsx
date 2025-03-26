@@ -300,8 +300,10 @@ const Solar = () => {
               </div>
               
               {/* Content area for Summary or Star List - Made scrollable for small screens */}
-              <div className="mt-4 sm:mt-8 w-full max-w-md bg-black/30 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
+                <div>
+
                 {showSummary && (
+                  <div className="mt-4 sm:mt-8 w-full max-w-md bg-black/30 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
                   <div className="animate-fadeIn">
                     <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Mood Summary for {circles[selectedCircle - 1].month}</h3>
                     <p className="text-white/80 mb-2 sm:mb-4 text-sm sm:text-base">This is where the mood summary data from the backend will be displayed.</p>
@@ -331,9 +333,11 @@ const Solar = () => {
                       </ul>
                     </div>
                   </div>
+                  </div>
                 )}
                 
                 {showStarList && (
+                  <div className="mt-4 sm:mt-8 w-full max-w-md bg-black/30 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
                   <div className="animate-fadeIn">
                     <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Star List for {circles[selectedCircle - 1].month}</h3>
                     <p className="text-white/80 mb-2 sm:mb-4 text-xs sm:text-sm">Calendar view of all days in this month. Each day can display mood data from the backend.</p>
@@ -349,8 +353,6 @@ const Solar = () => {
                       
                       {/* Generate placeholder days for the month */}
                       {Array.from({ length: 31 }, (_, i) => {
-                        // This would be replaced with actual logic to determine the correct days for each month
-                        // and their corresponding mood data from the backend
                         const day = i + 1;
                         const isValid = day <= 31; // Simple validation, would be more complex with real data
                         
@@ -359,7 +361,6 @@ const Solar = () => {
                         const randomMoodColor = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
                         
                         // Format date for URL: YYYY-MM-DD
-                        // Using current year and selected month
                         const currentYear = new Date().getFullYear();
                         const monthIndex = circles[selectedCircle - 1].month;
                         const formattedDate = `${day.toString().padStart(2, '0')}-${selectedCircle.toString().padStart(2, '0')}-${currentYear}`;
@@ -383,8 +384,9 @@ const Solar = () => {
                     
                     <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-white/60 italic">Note: This is placeholder data. In the future, this will display real mood data for each day from the backend.</p>
                   </div>
-                )}
               </div>
+                )}
+                </div>
             </div>
           )}
         </div>

@@ -1,10 +1,9 @@
 import React, { useState, useRef,useContext } from 'react';
-import { gsap } from 'gsap';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
-import dayjs from 'dayjs';
+
 
 import AppContext from '../context/AppContext';
 
@@ -135,6 +134,7 @@ const Notepad = () => {
                 <DatePicker
                   value={datevalue}
                   onChange={(newValue) => setValue(newValue)}
+                  format="DD-MM-YYYY"
                   renderInput={(params) => <TextField {...params} />}
                   />
               </LocalizationProvider>

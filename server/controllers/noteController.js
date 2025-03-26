@@ -52,6 +52,65 @@ const getNotesId = async (req, res)=>{
     }
 };
 
+const getNotesobjid = async (req, res)=>{
+    const { userId } = req.body;
+    const { idobj } = req.query;
+    console.log(userId)
+    if (!userId) {
+        return res.status(400).json({ success: false, message: "User ID is required" });
+    }
+
+    try {
+        const notes = await notepadModel.findOne({ _id:idobj });
+        if (!notes) {
+            return res.status(404).json({ success: false, message: "Note not found" });
+        }else{
+            res.json({ success: true, note: notes});
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};
+
+const updateNotesobjid = async (req, res) => {
+    console.log('Request Query:', req.query);  // Log all query parameters
+    console.log('Request Body:', req.body);
+    const { idobj } = req.query;  // Note ID from the query params
+    const { userId } = req.body;  // User ID from the body
+    console.log('Note ID:', idobj);
+    
+    try {
+        const oldnote = await notepadModel.findOne({ _id:idobj });
+        if (!oldnote) {
+            return res.status(404).json({ success: false, message: "Note not found" });
+        }
+        if (oldnote.userId.toString() !== userId._id) {
+            return res.status(403).json({ success: false, message: "You do not have permission to edit this note" });
+        }
+        const updatedNote = await notepadModel.findByIdAndUpdate(
+            idobj, 
+            req.body,
+            { new: true } 
+        );
+
+        if (!updatedNote) {
+            return res.status(500).json({ success: false, message: "Failed to update note" });
+        }
+
+        // Return success
+        return res.status(200).json({
+            success: true,
+            message: "Note updated successfully",
+            note: updatedNote
+        });
+    } catch (error) {
+        console.error(error);  // Log the error for debugging
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
+
+    
+
 const DeleteNotesobject = async (req, res)=>{
     const { userId } = req.body;
     const { idobj } = req.query;
@@ -108,10 +167,6 @@ const getNotesday = async (req, res)=>{
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
-
-
-
-
 
 const summaryMoonData =  async (req,res) => {
     const { userId, } = req.body;
@@ -170,5 +225,4 @@ const summaryMoonData =  async (req,res) => {
 }
 
 
-export { insertNote, getAllNotes ,getNotesId,summaryMoonData,getNotesday,DeleteNotesobject};
-
+export { insertNote, getAllNotes ,getNotesId,summaryMoonData,getNotesday,DeleteNotesobject,getNotesobjid,updateNotesobjid};
