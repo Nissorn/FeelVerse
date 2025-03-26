@@ -108,9 +108,9 @@ export const login =async(req,res) =>{
             'none' : 'strict',
             maxAge : 7 * 24 * 60 * 60 * 1000
         });
+    
+        console.log("Your Token : " +token)
         return res.json({success: true});
-
-
     } catch(error){
         return res.json({ success: false, message: error.message});
     }

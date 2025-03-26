@@ -1,10 +1,9 @@
 import React, { useState, useRef,useContext } from 'react';
-import { gsap } from 'gsap';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
-import dayjs from 'dayjs';
+
 
 import AppContext from '../context/AppContext';
 
@@ -14,6 +13,7 @@ const Notepad = () => {
   const [showEmojis, setShowEmojis] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [selectedmood, setSelectedmood] = useState('');
+  const [selectedscore, setSelectedscore] = useState(0);
   const [hovered, setHovered] = useState(false);
   const squareRef = useRef(null);
   const [datevalue, setValue] = React.useState(null);
@@ -38,6 +38,7 @@ const Notepad = () => {
     setShowSquare(false);
     setValue(null);
     setSelectedEmoji('');
+    setSelectedscore(0);
     setText('');
     setShowSquare(false);
     setShowEmojis(false);
@@ -55,11 +56,12 @@ const Notepad = () => {
     console.log("mood:", selectedmood);
 
     try {
-      const {data} = await axios.post(backendUrl+'/api/note/insertnote', {
+      const {data} = await axios.post(backendUrl+'/api/note/insertnote',{
           date: datevalue,
           note: text,
           emoji: selectedEmoji,
-          mood: selectedmood
+          mood: selectedmood,
+          score: selectedscore
         },{ withCredentials: true });
 
         console.log("Response:", data);
@@ -68,6 +70,7 @@ const Notepad = () => {
         alert("Note saved successfully!");
         setValue(null);
         setSelectedEmoji('');
+        setSelectedscore(0);
         setText('');
         setShowSquare(false);
         setShowEmojis(false);
@@ -89,9 +92,10 @@ const Notepad = () => {
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmojiSelect = (emoji,name) => {
+  const handleEmojiSelect = (emoji,name,score) => {
     setSelectedEmoji(emoji);
     setSelectedmood(name);
+    setSelectedscore(score);
     setShowEmojis(false)
   };
 
@@ -130,6 +134,7 @@ const Notepad = () => {
                 <DatePicker
                   value={datevalue}
                   onChange={(newValue) => setValue(newValue)}
+                  format="DD-MM-YYYY"
                   renderInput={(params) => <TextField {...params} />}
                   />
               </LocalizationProvider>
@@ -157,17 +162,17 @@ const Notepad = () => {
 
               {showEmojis && (
                 <div className="absolute top-[20px] left-[53.6%] w-fit ml-8 bg-[#b1b1b1] rounded-mdright-0 rounded p-2">
-                  {[  {emoji:'💓',name:'Love'},
-                      {emoji:'😂',name:'Joy'},
-                      {emoji:'😟',name:'Worry'},
-                      {emoji:'😡',name:'Angry'}, 
-                      {emoji:'💪',name:'Courage'},
-                      {emoji:'💔',name:'Sadness'},
-                      {emoji:'😏',name:'Chill'}].map(({emoji,name}) => (
+                  {[  {emoji:'💓',name:'Love',score : 100},
+                      {emoji:'😂',name:'Joy',score : 77},
+                      {emoji:'😟',name:'Worry',score : 40},
+                      {emoji:'😡',name:'Angry',score : 30}, 
+                      {emoji:'💪',name:'Courage',score : 68},
+                      {emoji:'💔',name:'Sadness',score : 20},
+                      {emoji:'😏',name:'Chill',score : 50}].map(({emoji,name,score}) => (
                     <button 
                       key={emoji}
                       className="text-2xl m-1"
-                      onClick={() => handleEmojiSelect(emoji,name)}
+                      onClick={() => handleEmojiSelect(emoji,name,score)}
                       title={name}
                     >
                       {emoji}
