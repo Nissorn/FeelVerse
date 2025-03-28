@@ -2,12 +2,14 @@ import React, { useState, useRef,useContext } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
 import AppContext from '../context/AppContext';
 
 const Notepad = () => {
+  const navigate = useNavigate();
   const [showSquare, setShowSquare] = useState(false);
   const [text, setText] = useState('');
   const [showEmojis, setShowEmojis] = useState(false);
@@ -101,6 +103,12 @@ const Notepad = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black">
+      <button
+        className="absolute top-[60px] left-[200px] transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
+        onClick={() => navigate('/home')}
+      >
+        Leave
+      </button>
       <div
         className="group relative w-[90vw] h-[90vh] max-w-4xl flex items-center justify-center rounded-lg"
         onMouseEnter={handleMouseEnter}
@@ -109,7 +117,7 @@ const Notepad = () => {
       >
         <div
           className={`relative w-full h-full rounded-lg transition-all duration-300 ease-in-out ${
-            !showSquare ? 'group-hover:shadow-glow group-hover:scale-105' : ''
+            !showSquare ? 'group-hover:shadow-glow' : ''
           }`}
           style={{
             backgroundImage: hovered
@@ -140,7 +148,7 @@ const Notepad = () => {
               </LocalizationProvider>
             </div>
               <button
-                className="absolute top-4 right-1/2 mr-24 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
+                className="absolute top-[25px] right-1/2 mr-24 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
                 onClick={handleCloseClick}
               >
                 Close
