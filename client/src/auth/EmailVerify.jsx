@@ -65,23 +65,28 @@ const EmailVerify =()=>{
     }
     
     return(
-        <div className="flex min-h-screen items-center justify-center">
-            <div className='glass-card p-8 w-1/3'>
-                <h1 className='text-white font-semibold text-2xl text-center '>Email Verify OTP</h1>         
-                <p className='mt-3 text-center text-xl mb-6 text-indigo-300'>Enter the 6-digit code sent to your email id.</p>
+        <div className="flex min-h-screen items-center justify-center p-4 bg-black/10">
+            <div className='glass-card p-6 sm:p-8 md:p-10 w-[95%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] max-w-lg mx-auto'>
+                <h1 className='text-white font-semibold text-xl sm:text-2xl text-center'>Email Verify OTP</h1>         
+                <p className='mt-2 sm:mt-3 text-center text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-indigo-300'>Enter the 6-digit code sent to your email id.</p>
 
-                <div className='flex justify-between my-8 px-10' onPaste={handlePaste}>
-                    {Array(6).fill(0).map((_,index)=>(
-                        <input type='text' maxLength='1' key={index} required className='w-12  h-16 bg-space-blue  text-center text-xl rounded-lg'
-                        ref={e=> inputRefs.current[index]=e}
-                        onInput={(e) => handleInput(e,index)}
-                        onKeyDown={(e)=> handleKey(e,index)}
+                <div className='flex justify-between my-4 sm:my-6 md:my-8 px-2 sm:px-6 md:px-10' onPaste={handlePaste}>
+                    {Array(6).fill(0).map((_,index)=>(                        
+                        <input 
+                            type='text' 
+                            maxLength='1' 
+                            key={index} 
+                            required 
+                            className='w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 bg-space-blue text-white text-center text-xl sm:text-2xl md:text-3xl rounded-lg border-2 border-indigo-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all'
+                            ref={e=> inputRefs.current[index]=e}
+                            onInput={(e) => handleInput(e,index)}
+                            onKeyDown={(e)=> handleKey(e,index)}
                         />
                     ))}
                 </div>
       
-                <button type="submit" className="space-button w-full hover:nebula-glow " onClick={handlesubmit}>
-                    Veritfy Email
+                <button type="submit" className="space-button w-full hover:nebula-glow text-sm sm:text-base" onClick={handlesubmit}>
+                    Verify Email
                 </button>
             </div>
         </div>

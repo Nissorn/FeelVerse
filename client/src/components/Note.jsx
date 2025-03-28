@@ -239,15 +239,6 @@ const Note = () => {
         <div className="text-white text-lg font-medium">
           {formatDate(date)}
         </div>
-        <button
-          className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm
-                     flex flex-col items-center justify-center gap-1 p-2 transition-all duration-300 hover:scale-110"
-          aria-label="Menu"
-        >
-          <span className="w-4 h-[2px] bg-white"></span>
-          <span className="w-4 h-[2px] bg-white"></span>
-          <span className="w-4 h-[2px] bg-white"></span>
-        </button>
       </div>
 
       <div>
