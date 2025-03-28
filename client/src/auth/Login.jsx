@@ -68,16 +68,15 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center flex-col mt-[-5vh]">
-      <h2 className="welcome-text text-white text-3xl font-bold mb-12 mt-[-2rem]">Welcome</h2>
+      {error && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 w-[85vw] max-w-md bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg shadow-lg z-50 text-center backdrop-blur-sm">
+          {error}
+        </div>
+      )}
+      <h2 className="welcome-text text-white text-3xl font-bold mb-12 mt-[-2rem] relative z-10">Welcome</h2>
 
       {/* Glass card container */}
-      <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative">
-        {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-2 rounded">
-            {error}
-          </div>
-        )}
-
+      <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative z-20">
         {/* Black box container with signup link*/}
         <div className='black-box w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -top-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 opacity-0'>
           <h1 className='text-[#4117FF] text-xl'>"No account yet"</h1>
