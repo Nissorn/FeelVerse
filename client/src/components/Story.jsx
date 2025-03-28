@@ -1,6 +1,7 @@
+import gsap from 'gsap';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
+import backgroundMusic from '../assets/Feelverse.mp3';
 import storyImg1 from '../assets/storyImg1.jpg';
 import storyImg2 from '../assets/storyImg2.jpg';
 
@@ -9,7 +10,21 @@ function Story() {
   const containerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const audioRef = useRef(new Audio(backgroundMusic));
+
+  useEffect(() => {
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+    audioRef.current.play().catch((error) => {
+      console.warn("Autoplay prevented: ", error);
+    });
   
+    return () => {
+      audioRef.current.pause();
+    };
+  }, []);
+
+
   useEffect(() => {
     // Check authentication
     const isAuthenticated = localStorage.getItem('isAuthenticated');
