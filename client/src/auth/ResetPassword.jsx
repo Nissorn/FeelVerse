@@ -143,14 +143,14 @@ const ResetPassword =()=>{
                     <h1 className='text-white font-semibold text-xl sm:text-2xl text-center'>Reset Password OTP</h1>         
                     <p className='mt-2 sm:mt-3 text-center text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-indigo-300'>Enter the 6-digit code sent to your email</p>
 
-                    <div className='flex justify-between my-4 sm:my-6 md:my-8 px-2 sm:px-6 md:px-10' onPaste={handlePaste}>
+                    <div className='flex justify-center gap-2 sm:gap-4 my-4 sm:my-6 md:my-8 max-w-md mx-auto' onPaste={handlePaste}>
                         {Array(6).fill(0).map((_,index)=>(
                             <input 
                                 type='text' 
                                 maxLength='1' 
                                 key={index} 
                                 required 
-                                className='w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 bg-space-blue text-white text-center text-xl sm:text-2xl md:text-3xl rounded-lg border-2 border-indigo-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all'
+                                className='w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 bg-space-blue text-white text-center text-lg sm:text-xl md:text-2xl rounded-lg border-2 border-indigo-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all'
                                 ref={e=> inputRefs.current[index]=e}
                                 onInput={(e) => handleInput(e,index)}
                                 onKeyDown={(e)=> handleKey(e,index)}
