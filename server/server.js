@@ -13,8 +13,14 @@ connectDB();
 
 const allowedOrigins = ['http://localhost:5173', 'https://feelverse.vercel.app', 'https://feelverse-server.vercel.app']
 
-app.use(express.json());
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 app.use(cookieParser());
+app.use(express.json());
+
+
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {

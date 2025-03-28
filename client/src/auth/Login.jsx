@@ -48,7 +48,7 @@ const Login = () => {
       const { data } = await axios.post(`${backendUrl}/api/auth/login`, {
         email: formData.email,
         password: formData.password,
-      });
+      }, { withCredentials: true });
 
       if (data.success) {
         console.log("complete");

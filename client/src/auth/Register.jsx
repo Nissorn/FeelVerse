@@ -47,7 +47,7 @@ const Register = () => {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-        });
+        },{ withCredentials: true });
   
         if(data.success){
           navigate('/email-verify',{state:formData.email})
