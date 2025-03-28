@@ -1,41 +1,25 @@
-import express from 'express';
-import cors from "cors";
-import 'dotenv/config';
-import cookieParser from "cookie-parser";
-import connectDB from './config/mongodb.js';
-import authRouter from './routes/authRoutes.js'
-import userRouter from './routes/userRoutes.js';
-import noteRoutes from './routes/noteRoutes.js';
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const cors =require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
+const { readdirSync } = require('fs');
+
 
 const app = express();
-const port = process.env.PORT || 4000
-connectDB();
-
-const allowedOrigins = ['http://localhost:5173', 'https://feelverse.vercel.app', 'https://feelverse-server.vercel.app']
-
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}));
-app.use(cookieParser());
-app.use(express.json());
 
 
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}))
+//middleware
+app.use(morgan("dev"));
+app.use(bodyParser.json({ limit: "2mb"}));
+app.use(cors());
 
-//API Endpoints
-app.get('/',(req,res) => res.send("API SUSU"));
-app.use('/api/auth', authRouter)
-app.use('/api/user', userRouter)
-app.use('/api/note', noteRoutes)
+//Route
+readdirSync('./routes')
+    .map((r) => app.use('/api', require('./routes/' + r)));
+   
 
+
+const port = 5000 || 8000;
 app.listen(port, () => console.log(`Server is Running on port ${port}`));

@@ -4,17 +4,8 @@ import gsap from 'gsap';
 
 import Footer from '../components/Footer';
 
-import axios from 'axios';
-import { AppContext} from '../context/AppContext'
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 const Register = () => {
-  const navigate = useNavigate();
-  const {backendUrl,setIsLogin} = useContext(AppContext)
-
   useEffect(() => {
-    localStorage.setItem('isAuthenticated', false);
     // Animate form elements
     gsap.fromTo('.register-form',
       { opacity: 0, y: 20 },
@@ -29,34 +20,14 @@ const Register = () => {
   }, []);
 
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    if(formData.password!== formData.confirmPassword){
-      throw new Error('Password Not Match');
-    }
-    try{
-      const {data} = await axios.post(backendUrl+'/api/auth/register',
-        {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        },{ withCredentials: true });
-  
-        if(data.success){
-          navigate('/email-verify',{state:formData.email})
-        }else{
-          console.log(data.message);
-        }
-    }catch(err){
-        console.log(err.message);
-    }
+    // TODO: Implement registration logic
   };
 
   return (
@@ -76,23 +47,12 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="register-form flex flex-col opacity-0">
           <div className="space-y-4">
-          <label className="block text-[20px] font-medium text-white mb-1 text-center">Register</label>
             <div>
-              <input
-                type="text"
-                placeholder='Enter your Username'
-                className="w-full glass-card bg-black/60 text-white focus:bg-nebula-glow rounded-[30px]"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
+              <label className="block text-[20px] font-medium text-white mb-1 text-center">Register</label>
               <input
                 type="email"
                 placeholder='Enter your email'
-                className="w-full glass-card bg-black/60 text-white rounded-[30px]"
+                className="w-full glass-card bg-black/60 text-white focus:bg-nebula-glow rounded-[30px]"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
@@ -104,13 +64,12 @@ const Register = () => {
                 type="password"
                 placeholder='Enter your password'
                 className="w-full glass-card bg-black/60 text-white rounded-[30px]"
-                value={formData.password
-                }
+                value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
               />
             </div>
-         
+
             <div>
               <input
                 type="password"
@@ -128,7 +87,7 @@ const Register = () => {
               Sign Up
             </button>
           </div>
-        </form> 
+        </form>
       </div>
       <Footer/>
     </div>
