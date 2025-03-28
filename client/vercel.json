@@ -1,0 +1,14 @@
+{
+  "rewrites": [{
+    "source": "/api/:path*",
+    "destination": "https://feelverse-server.vercel.app/api/:path*"
+  }],
+  "env": {
+    "VITE_BACKEND_URL": "https://feelverse-server.vercel.app"
+  },
+  "build": {
+    "env": {
+      "VITE_BACKEND_URL": "https://feelverse-server.vercel.app"
+    }
+  }
+}

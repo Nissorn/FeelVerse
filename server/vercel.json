@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [{
+    "src": "server.js",
+    "use": "@vercel/node"
+  }],
+  "routes": [{
+    "src": "/(.*)",
+    "dest": "server.js"
+  }],
+  "env": {
+    "MONGODB_URL": "@mongodb_url",
+    "JWT_SECRET": "@jwt_secret",
+    "NODE_ENV": "production",
+    "SMTP_USER": "@smtp_user",
+    "SMTP_PASS": "@smtp_pass",
+    "SENDER_EMAIL": "@sender_email"
+  }
+}
