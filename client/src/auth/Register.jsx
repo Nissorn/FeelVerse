@@ -47,7 +47,7 @@ const Register = () => {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-        },{ withCredentials: true });
+        });
   
         if(data.success){
           navigate('/email-verify',{state:formData.email})
@@ -63,12 +63,12 @@ const Register = () => {
     <div className="flex min-h-screen items-center justify-center flex-col mt-[-5vh]">
       <h2 className="register-title text-gradient text-3xl font-bold mb-12 mt-[-2rem]">Join the space</h2>
       {/* Glass Card Container */}
-      <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative">
+      <div className="glass-card p-8 w-[85vw] h-[75vh] max-w-md relative">
         {/* Black box container*/}
-        <div className='w-[85%] max-w-[336px] h-[33vh] bg-black border border-[#50F] rounded-[20px] absolute -bottom-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center transition-all duration-300'>
+        <div className='w-[85%] max-w-[336px] h-[30vh] bg-black border border-[#50F] rounded-[20px] absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center gap-6 transition-all duration-300'>
           <h1 className='text-[#4117FF] text-xl'>"Already have account?"</h1>
           <Link to="/Login">
-            <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
+            <button className="px-20 py-2 bg-white text-black rounded-full hover:bg-space-star transition-colors">
                 Yes
             </button>
           </Link>
