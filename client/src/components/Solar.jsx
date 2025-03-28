@@ -1,7 +1,5 @@
-import axios from 'axios';
-import { useState, useEffect ,useContext} from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
 
 const Solar = () => {
   const navigate = useNavigate();
@@ -10,10 +8,6 @@ const Solar = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [showStarList, setShowStarList] = useState(false);
-  const [showSummaryData, setSummaryData] = useState({
-    mood: '',
-    percent: ''
-  });
 
   // Mood colors mapping (this would typically come from backend)
   // Mood colors mapping with default color
@@ -33,7 +27,6 @@ const Solar = () => {
     December: '#4A4A4A'    // Example: Melancholic
   };
 
-  const {backendUrl} = useContext(AppContext)
   //Create 12 circle for each month
   const circles = Array.from({ length: 12 }, (_, index) => {
     const angle = (index * 30) * (Math.PI / 180);
@@ -72,8 +65,6 @@ const Solar = () => {
   
   const handleSummaryClick = () => {
     setShowSummary(true);
-    summaryData(selectedCircle,2025);
-    console.log(selectedCircle)
     setShowStarList(false);
   };
   
@@ -134,30 +125,6 @@ const Solar = () => {
     setShowSolarText(false);
   };
 
-  const summaryData = async (month,year) => {
-  try {
-      console.log("Params Sent:", { month, year });
-      console.log(month)
-      const response = await axios.get(`${backendUrl}/api/note/summary`, {
-        params: { month, year },
-        withCredentials: true 
-      });
-
-      console.log("Response Data:", response.data);
-      if (response.data.success) {
-        setSummaryData({
-          mood: response.data.maxMood,
-          percent: response.data.percentmood
-        });
-        console.log(showSummaryData)
-      } else {
-        console.error("Failed to fetch summary:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching summary data:", error);
-    }
-  };
-
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-black/0 overflow-hidden">
       {/*Navigation Bar */}
@@ -170,7 +137,15 @@ const Solar = () => {
         >
           <span className="text-2xl text-white">←</span>
         </button>
-
+        <button
+          className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm
+                     flex flex-col items-center justify-center gap-1 p-2 transition-all duration-300 hover:scale-110"
+          aria-label="Menu"
+        >
+          <span className="w-4 h-[2px] bg-white"></span>
+          <span className="w-4 h-[2px] bg-white"></span>
+          <span className="w-4 h-[2px] bg-white"></span>
+        </button>
       </div>
       {/* Main display area with circles */}
       <div className="relative w-full max-w-[1200px] h-[600px] flex items-center justify-center mb-8 px-4 sm:px-8 md:px-12">
@@ -292,47 +267,35 @@ const Solar = () => {
               </div>
               
               {/* Content area for Summary or Star List - Made scrollable for small screens */}
-                <div>
-
+              <div className="mt-4 sm:mt-8 w-full max-w-md bg-black/30 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
                 {showSummary && (
-                  <div className="mt-4 sm:mt-8 w-full max-w-md bg-black/30 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
                   <div className="animate-fadeIn">
                     <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Mood Summary for {circles[selectedCircle - 1].month}</h3>
-                    {/* <p className="text-white/80 mb-2 sm:mb-4 text-sm sm:text-base">This is where the mood summary data from the backend will be displayed.</p> */}
+                    <p className="text-white/80 mb-2 sm:mb-4 text-sm sm:text-base">This is where the mood summary data from the backend will be displayed.</p>
                     <div className="p-3 sm:p-4 bg-white/10 rounded-lg">
-                      {/* <p className="italic text-white/60 text-xs sm:text-sm">Example data (will be replaced with real data from backend):</p> */}
+                      <p className="italic text-white/60 text-xs sm:text-sm">Example data (will be replaced with real data from backend):</p>
                       <ul className="mt-2 space-y-1 sm:space-y-2 text-sm sm:text-base">
                         <li className="flex justify-between">
                           <span>Dominant Mood:</span>
-                            
-                          <span className="font-medium">{showSummaryData.mood}</span>
+                          <span className="font-medium">Calm</span>
                         </li>
                         <li className="flex justify-between">
                           <span>Average Mood Score:</span>
-                          <span className="font-medium">{showSummaryData.percent ? Number(showSummaryData.percent).toFixed(2) : "0.00"}%</span>
+                          <span className="font-medium">7.5/10</span>
                         </li>
                         <li className="flex justify-between">
                           <span>Mood Fluctuation:</span>
-                          <span className={`font-medium ${showSummaryData.mood > 80? "text-cyan-400" : showSummaryData.mood > 40? "text-orange-400" : "text-indigo-500" }`}>
-                            {showSummaryData.percent > 80
-                              ? "Radiant" 
-                              : showSummaryData.percent > 40
-                              ? "Balanced"
-                              : "Melancholy"
-                              }
-                          </span>
+                          <span className="font-medium">Low</span>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  </div>
                 )}
                 
                 {showStarList && (
-                  <div className="mt-4 sm:mt-8 w-full max-w-md bg-black/30 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
                   <div className="animate-fadeIn">
                     <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Star List for {circles[selectedCircle - 1].month}</h3>
-                    <p className="text-white/0 mb-2 sm:mb-4 text-xs sm:text-sm">Calendar view of all days in this month. Each day can display m</p>
+                    <p className="text-white/80 mb-2 sm:mb-4 text-xs sm:text-sm">Calendar view of all days in this month. Each day can display mood data from the backend.</p>
                     
                     {/* Calendar grid - Made responsive for small screens */}
                     <div className="grid grid-cols-7 gap-1 sm:gap-2 mt-2 sm:mt-4">
@@ -345,6 +308,8 @@ const Solar = () => {
                       
                       {/* Generate placeholder days for the month */}
                       {Array.from({ length: 31 }, (_, i) => {
+                        // This would be replaced with actual logic to determine the correct days for each month
+                        // and their corresponding mood data from the backend
                         const day = i + 1;
                         const isValid = day <= 31; // Simple validation, would be more complex with real data
                         
@@ -353,9 +318,10 @@ const Solar = () => {
                         const randomMoodColor = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
                         
                         // Format date for URL: YYYY-MM-DD
+                        // Using current year and selected month
                         const currentYear = new Date().getFullYear();
                         const monthIndex = circles[selectedCircle - 1].month;
-                        const formattedDate = `${day.toString().padStart(2, '0')}-${selectedCircle.toString().padStart(2, '0')}-${currentYear}`;
+                        const formattedDate = `${currentYear}-${selectedCircle.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                         
                         return isValid ? (
                           <div 
@@ -374,11 +340,10 @@ const Solar = () => {
                       })}
                     </div>
                     
-                    {/* <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-white/60 italic">Note: This is placeholder data. In the future, this will display real mood data for each day from the backend.</p> */}
+                    <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-white/60 italic">Note: This is placeholder data. In the future, this will display real mood data for each day from the backend.</p>
                   </div>
-              </div>
                 )}
-                </div>
+              </div>
             </div>
           )}
         </div>
