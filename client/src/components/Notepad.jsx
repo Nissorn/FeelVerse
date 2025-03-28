@@ -100,7 +100,7 @@ const Notepad = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-black">
+    <div className="relative min-h-screen flex items-center justify-center bg-black overflow-x-hidden">
       <div
         className="group relative w-[90vw] h-[90vh] max-w-4xl flex items-center justify-center rounded-lg"
         onMouseEnter={handleMouseEnter}
@@ -122,62 +122,66 @@ const Notepad = () => {
         >
           {showSquare && (
             <>
-              <div ref={squareRef} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 h-3/4 bg-[#d4d4d4] border border-black flex flex-col items-center justify-center">
-                <textarea //Text area
+              <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4 bg-[#d4d4d4] rounded-t-md">
+                <div className="flex items-center gap-4">
+                  <div className="w-[60%] sm:w-[40%] md:w-[30%] lg:w-1/4">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={datevalue}
+                        onChange={(newValue) => setValue(newValue)}
+                        format="DD-MM-YYYY"
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <button
+                    className="w-[45px] sm:w-[48px] md:w-[50px] h-[45px] sm:h-[48px] md:h-[50px] bg-[#c0c0c0] rounded flex items-center justify-center text-sm sm:text-base hover:bg-[#b0b0b0] transition-colors shadow-md"
+                    onClick={handleEmojiClick}
+                    title="Select mood"
+                  >
+                    {selectedEmoji || '😊'}
+                  </button>
+                </div>
+                <button
+                  className="bg-[#c0c0c0] text-black rounded-md px-2 sm:px-3 md:px-4 py-1 sm:py-2 text-sm sm:text-base hover:bg-[#b0b0b0] transition-colors shadow-md flex items-center gap-1"
+                  onClick={handleCloseClick}
+                >
+                  <span>✕</span>
+                </button>
+              </div>
+              <div ref={squareRef} className="absolute top-[120px] left-1/2 transform -translate-x-1/2 w-[80%] sm:w-[60%] md:w-[40%] lg:w-1/4 h-[calc(70%-80px)] sm:h-[calc(75%-80px)] bg-[#d4d4d4] border border-black flex flex-col items-center justify-center">
+                <textarea
                   className="w-full h-full p-2 bg-transparent border-none resize-none focus:outline-none text-black"
                   value={text}
                   onChange={handleTextChange}
                 />
               </div>
-            <div className='absolute top-[20px] left-1/3 ml-8 w-1/5 bg-[#d4d4d4] rounded-md'>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  value={datevalue}
-                  onChange={(newValue) => setValue(newValue)}
-                  format="DD-MM-YYYY"
-                  renderInput={(params) => <TextField {...params} />}
-                  />
-              </LocalizationProvider>
-            </div>
               <button
-                className="absolute top-4 right-1/2 mr-24 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
-                onClick={handleCloseClick}
-              >
-                Close
-              </button>
-
-              <button
-                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded-md px-2 sm:px-3 md:px-4 py-1 sm:py-2 text-sm sm:text-base hover:bg-[#c0c0c0] transition-colors shadow-md"
                 onClick={handleTurnInClick}
               >
                 Turn in
               </button>
-
-              <button
-                className="absolute top-[20px] left-1/2 ml-16 w-[50px] h-[55px] bg-[#d4d4d4] justify-center rounded-mdright-0 rounded "
-                onClick={handleEmojiClick}
-              >
-                {selectedEmoji || 'mood'}
-              </button>
-
               {showEmojis && (
-                <div className="absolute top-[20px] left-[53.6%] w-fit ml-8 bg-[#b1b1b1] rounded-mdright-0 rounded p-2">
-                  {[  {emoji:'💓',name:'Love',score : 100},
-                      {emoji:'😂',name:'Joy',score : 77},
-                      {emoji:'😟',name:'Worry',score : 40},
-                      {emoji:'😡',name:'Angry',score : 30}, 
-                      {emoji:'💪',name:'Courage',score : 68},
-                      {emoji:'💔',name:'Sadness',score : 20},
-                      {emoji:'😏',name:'Chill',score : 50}].map(({emoji,name,score}) => (
-                    <button 
-                      key={emoji}
-                      className="text-2xl m-1"
-                      onClick={() => handleEmojiSelect(emoji,name,score)}
-                      title={name}
-                    >
-                      {emoji}
-                    </button>
-                  ))}
+                <div className="absolute top-[60px] right-16 w-fit bg-[#b1b1b1] rounded-lg p-2 z-20 shadow-lg border border-gray-400">
+                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-1">
+                    {[  {emoji:'💓',name:'Love',score : 100},
+                        {emoji:'😂',name:'Joy',score : 77},
+                        {emoji:'😟',name:'Worry',score : 40},
+                        {emoji:'😡',name:'Angry',score : 30}, 
+                        {emoji:'💪',name:'Courage',score : 68},
+                        {emoji:'💔',name:'Sadness',score : 20},
+                        {emoji:'😏',name:'Chill',score : 50}].map(({emoji,name,score}) => (
+                      <button 
+                        key={emoji}
+                        className="text-xl sm:text-2xl p-1 sm:m-1 hover:bg-gray-300 rounded-md transition-colors active:scale-95"
+                        onClick={() => handleEmojiSelect(emoji,name,score)}
+                        title={name}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </>
