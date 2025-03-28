@@ -110,26 +110,26 @@ const ResetPassword =()=>{
 
     return(
         (state===0)?(
-            <div className="flex min-h-screen items-center justify-center">
-                <div className='glass-card p-8 w-1/5 '>
-                    <h1 className='text-white font-semibold text-2xl text-center '>Reset Password</h1>         
-                    <p className='mt-3 text-center text-xl mb-6 text-indigo-300'>Enter your email address</p>
-                    <div className='flex flex-row  items-center justify-start bg-space-blue rounded-3xl'>
-                        <HiOutlineMail size={24} color="#999" className='ml-10' />
+            <div className="flex min-h-screen items-center justify-center p-4">
+                <div className='glass-card p-4 sm:p-6 md:p-8 w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 max-w-md mx-auto'>
+                    <h1 className='text-white font-semibold text-xl sm:text-2xl text-center'>Reset Password</h1>         
+                    <p className='mt-2 sm:mt-3 text-center text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-indigo-300'>Enter your email address</p>
+                    <div className='flex flex-row items-center justify-start bg-space-blue rounded-3xl p-2 sm:p-3'>
+                        <HiOutlineMail size={24} color="#999" className='ml-2 sm:ml-4' />
                         <input 
                             type="email" 
                             placeholder="Email" 
                             value={dataEmail}
-                            className='ml-2 mt-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            className='ml-2 w-full bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent text-white'
                             onChange={(e) => setDataEmail(e.target.value)}
                         />
                     </div>
                     
 
-                    <form onSubmit={handlesubmitresetPass} className="mt-4 flex flex-1 w-full items-center justify-center">
+                    <form onSubmit={handlesubmitresetPass} className="mt-4 sm:mt-6 flex flex-1 w-full items-center justify-center">
                         <button
                             type="submit"
-                            className="justify-center space-button w-[80%]"
+                            className="justify-center space-button w-full hover:nebula-glow text-sm sm:text-base"
                         >
                             Submit
                         </button>
@@ -138,25 +138,30 @@ const ResetPassword =()=>{
             </div>
         ):(
         (state===1)?(
-            <div className="flex min-h-screen items-center justify-center">
-                <div className='glass-card p-8 w-1/3 '>
-                    <h1 className='text-white font-semibold text-2xl text-center '>Reset Password OTP</h1>         
-                    <p className='mt-3 text-center text-xl mb-6 text-indigo-300'>Enter your email address</p>
+            <div className="flex min-h-screen items-center justify-center p-4">
+                <div className='glass-card p-4 sm:p-6 md:p-8 w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 max-w-md mx-auto'>
+                    <h1 className='text-white font-semibold text-xl sm:text-2xl text-center'>Reset Password OTP</h1>         
+                    <p className='mt-2 sm:mt-3 text-center text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-indigo-300'>Enter the 6-digit code sent to your email</p>
 
-                    <div className='flex justify-between my-8 px-10' onPaste={handlePaste}>
+                    <div className='flex justify-between my-4 sm:my-6 md:my-8 px-2 sm:px-6 md:px-10' onPaste={handlePaste}>
                         {Array(6).fill(0).map((_,index)=>(
-                            <input type='text' maxLength='1' key={index} required className='w-12  h-16 bg-space-blue  text-center text-xl rounded-lg'
-                            ref={e=> inputRefs.current[index]=e}
-                            onInput={(e) => handleInput(e,index)}
-                            onKeyDown={(e)=> handleKey(e,index)}
+                            <input 
+                                type='text' 
+                                maxLength='1' 
+                                key={index} 
+                                required 
+                                className='w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 bg-space-blue text-white text-center text-xl sm:text-2xl md:text-3xl rounded-lg border-2 border-indigo-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all'
+                                ref={e=> inputRefs.current[index]=e}
+                                onInput={(e) => handleInput(e,index)}
+                                onKeyDown={(e)=> handleKey(e,index)}
                             />
                         ))}
                     </div>
                     
-                    <form onSubmit={handlesubmitOTP} className="mt-4 flex flex-1 w-full items-center justify-center">
+                    <form onSubmit={handlesubmitOTP} className="mt-4 sm:mt-6 flex flex-1 w-full items-center justify-center">
                         <button
                             type="submit"
-                            className="justify-center space-button w-[80%]"
+                            className="justify-center space-button w-full hover:nebula-glow text-sm sm:text-base"
                         >
                             Submit
                         </button>
@@ -164,31 +169,31 @@ const ResetPassword =()=>{
                 </div>
             </div>
         ):(
-            <div className="flex min-h-screen items-center justify-center">
-                <div className='glass-card p-8 w-1/5 '>
-                    <h1 className='text-white font-semibold text-2xl text-center '>New Password</h1>         
-                    <p className='mt-3 text-center text-xl mb-6 text-indigo-300'>Enter your email address</p>
-                    <div className='flex flex-row  items-center justify-start bg-space-blue rounded-3xl'>
+            <div className="flex min-h-screen items-center justify-center p-4">
+                <div className='glass-card p-4 sm:p-6 md:p-8 w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 max-w-md mx-auto'>
+                    <h1 className='text-white font-semibold text-xl sm:text-2xl text-center'>New Password</h1>         
+                    <p className='mt-2 sm:mt-3 text-center text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-indigo-300'>Enter your new password</p>
+                    <div className='flex flex-row items-center justify-start bg-space-blue rounded-3xl p-2 sm:p-3'>
                         <input 
                             type="password" 
                             placeholder="Enter New Password" 
-                            className='ml-2 mt-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            className='w-full bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent text-white'
                             onChange={(e) => setPasswordcheck({ ...Passwordcheck, password: e.target.value })}
                         />
                     </div>
-                    <div className='flex flex-row mt-4 items-center justify-start bg-space-blue rounded-3xl'>
+                    <div className='flex flex-row mt-4 items-center justify-start bg-space-blue rounded-3xl p-2 sm:p-3'>
                         <input 
                             type="password" 
                             placeholder="Enter Confirm Password" 
-                            className='ml-2 mt-2  bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent'
+                            className='w-full bg-transparent border-transparent outline-none focus:bg-transparent hover:bg-transparent focus:ring-0 focus:border-transparent text-white'
                             onChange={(e) => setPasswordcheck({ ...Passwordcheck, confirmPassword: e.target.value })}
                         />
                     </div>
                     
-                    <form onSubmit={handleconfirmPassword} className="mt-4 flex flex-1 w-full items-center justify-center">
+                    <form onSubmit={handleconfirmPassword} className="mt-4 sm:mt-6 flex flex-1 w-full items-center justify-center">
                         <button
                             type="submit"
-                            className="justify-center space-button w-[80%]"
+                            className="justify-center space-button w-full hover:nebula-glow text-sm sm:text-base"
                         >
                             Submit
                         </button>
