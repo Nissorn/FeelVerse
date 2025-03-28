@@ -1,13 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 import gsap from 'gsap';
-
 import Login from './auth/Login.jsx';
+import EmailVerify from './auth/EmailVerify.jsx';
+import ResetPassword from './auth/ResetPassword.jsx';
 import Register from './auth/Register.jsx';
 import Home from './components/Home.jsx';
 import Solar from './components/Solar.jsx';
 import Note from './components/Note.jsx';
 import Notepad from './components/Notepad.jsx';
+import Story from './components/Story.jsx';
+
+const ProtectedRoute = () => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  console.log("ProtectedRoute checked. isAuthenticated =", isAuthenticated);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+};
+
 
 function App() {
   useEffect(() => {
@@ -29,10 +38,16 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/solar" element={<Solar />} />
-            <Route path="/note/:date" element={<Note />} />
-            <Route path="/notepad" element={<Notepad />} />
+            <Route path="/email-verify" element={<EmailVerify />} />
+            <Route path="/ResetPassword" element={<ResetPassword/>} />
+              
+              <Route element={<ProtectedRoute />}>
+                <Route path="/home" element={<Home />} />
+                <Route path="/solar" element={<Solar />} />
+                <Route path="/note/:date" element={<Note />} />
+                <Route path="/notepad" element={<Notepad />} />
+                <Route path="/story" element={<Story />} />
+              </Route>
           </Routes>
         </div>
       </div>
@@ -40,4 +55,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

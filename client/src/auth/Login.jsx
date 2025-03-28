@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 import { Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
 import Footer from '../components/Footer';
+import axios from 'axios';
+
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const {backendUrl,setIsLoggedin,getUserData} = useContext(AppContext)
+  
   useEffect(() => {
+    localStorage.setItem('isAuthenticated', false);
     // Animate welcome text
     gsap.fromTo('.welcome-text', 
       { opacity: 0, y: -20 },
@@ -26,27 +32,30 @@ const Login = () => {
       { opacity: 1, y: 0, duration: 1, delay: 1, ease: 'back.out' }
     );
   }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
     try {
-      // Here you would typically make an API call to your backend
-      // For demonstration, we'll simulate an authentication check
-      if (formData.email === 'demo@example.com' && formData.password === 'password123') {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        // Store auth token or user data in localStorage/context
-        localStorage.setItem('isAuthenticated', 'true');
-        navigate('/home');
+      e.preventDefault();
+      setError('');
+      setLoading(true);
+      const  {data} = await axios.post(backendUrl+'/api/auth/login', {
+        email: formData.email,
+        password: formData.password,
+      }, { withCredentials: true });
+
+      if(data.success){
+        console.log("complete")
+        setIsLoggedin(true)
+        localStorage.setItem('isAuthenticated', true);
+        navigate('/home')
       } else {
         throw new Error('Invalid email or password');
       }
@@ -59,11 +68,7 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center flex-col mt-[-5vh]">
-<<<<<<< HEAD
-      <h2 className="welcome-text text-white text-3xl font-bold mb-12 mt-[-2rem] relative z-10">Welcome</h2>
-=======
       <h2 className="welcome-text text-white text-3xl font-bold mb-12 mt-[-2rem]">Welcome</h2>
->>>>>>> 8ec91d1142fef0327c16fd9899c1153934aaf27b
 
       {/* Glass card container */}
       <div className="glass-card p-8 w-[85vw] h-[70vh] max-w-md relative">
@@ -102,8 +107,8 @@ const Login = () => {
           >
             Yes
           </button>
+          </div>
           
-        </div>
         {/* Form Container  */}
         <form onSubmit={handleSubmit} className="login-form flex flex-col mt-[30vh] space-y-4">
           <div className="space-y-4">
@@ -132,7 +137,7 @@ const Login = () => {
               />
             </div>
           </div>
-
+          <button onClick={() => navigate('/ResetPassword')} className="register-form  text-[15px] font-medium text-blue-500 mt-1 ml-2 text-s text-start">forgot password</button>
           <div className="mt-4">
             <button 
               type="submit" 
@@ -142,18 +147,6 @@ const Login = () => {
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </div>
-          {/* <div className="flex items-center justify-center text-[10px]">
-            <Link to="/forgot-password" className="text-white hover:text-nebula-glow transition-colors">
-              Forgot your Password?
-            </Link>
-          </div> */}
-
-          {/*<p className="text-center text-sm text-gray-400">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-space-nebula hover:text-space-star transition-colors">
-              Sign Up
-            </Link>
-          </p>*/}
         </form>
       </div>
       <Footer />
