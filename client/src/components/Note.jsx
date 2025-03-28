@@ -78,6 +78,14 @@ const Note = () => {
     setText(e.target.value);
   };
 
+  const CloseModalEdit=(e)=>{
+    setIsModalEdit(false);
+    setSelectedEmoji('');
+    setSelectedscore(0);
+    setText('');
+    setShowEmojis(false);
+  }
+
   const handleTurnInClick = async (e) => {
       e.stopPropagation();
       if (!datevalue || !text || !selectedEmoji) {
@@ -98,14 +106,14 @@ const Note = () => {
             note: text,           // Note text
             emoji: selectedEmoji, // Selected emoji
             mood: selectedmood,   // Selected mood
-            score: selectedscore, // Selected score
-            withCredentials: true // Ensure the session or cookie is used
-        },{params: { idobj: idtarget }});
+            score: selectedscore, // Selected score// Ensure the session or cookie is used
+            idobj: idtarget
+          },{withCredentials: true });
 
         console.log("Response:", data);
 
         if (data.success) {
-            alert("Note saved successfully!");
+            // alert("Note saved successfully!");
             // Reset state values after success
             setValue(null);
             setSelectedEmoji('');
@@ -113,6 +121,7 @@ const Note = () => {
             setText('');
             setShowEmojis(false);
             listday();
+            CloseModalEdit();
         } else {
             alert("Error: " + data.message || 'Something went wrong');
         }
@@ -126,13 +135,6 @@ const Note = () => {
     setShowEmojis(!showEmojis);
   };
 
-  const CloseModalEdit=(e)=>{
-    setIsModalEdit(false);
-    setSelectedEmoji('');
-    setSelectedscore(0);
-    setText('');z
-    setShowEmojis(false);
-  }
     const handleEmojiSelect = (emoji,name,score) => {
     setSelectedEmoji(emoji);
     setSelectedmood(name);
@@ -237,15 +239,6 @@ const Note = () => {
         <div className="text-white text-lg font-medium">
           {formatDate(date)}
         </div>
-        <button
-          className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm
-                     flex flex-col items-center justify-center gap-1 p-2 transition-all duration-300 hover:scale-110"
-          aria-label="Menu"
-        >
-          <span className="w-4 h-[2px] bg-white"></span>
-          <span className="w-4 h-[2px] bg-white"></span>
-          <span className="w-4 h-[2px] bg-white"></span>
-        </button>
       </div>
 
       <div>

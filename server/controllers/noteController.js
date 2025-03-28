@@ -75,7 +75,7 @@ const getNotesobjid = async (req, res)=>{
 const updateNotesobjid = async (req, res) => {
     console.log('Request Query:', req.query);  // Log all query parameters
     console.log('Request Body:', req.body);
-    const { idobj } = req.query;  // Note ID from the query params
+    const idobj  = req.body.idobj; // Note ID from the query params
     const { userId } = req.body;  // User ID from the body
     console.log('Note ID:', idobj);
     
