@@ -1,13 +1,27 @@
-import React, { useState, useRef } from 'react';
-import { gsap } from 'gsap';
+import React, { useState, useRef,useContext } from 'react';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+
+import AppContext from '../context/AppContext';
 
 const Notepad = () => {
+  const navigate = useNavigate();
   const [showSquare, setShowSquare] = useState(false);
   const [text, setText] = useState('');
   const [showEmojis, setShowEmojis] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState('');
+  const [selectedmood, setSelectedmood] = useState('');
+  const [selectedscore, setSelectedscore] = useState(0);
   const [hovered, setHovered] = useState(false);
   const squareRef = useRef(null);
+  const [datevalue, setValue] = React.useState(null);
+
+
+  const {backendUrl,setIsLoggedin,getUserData} = useContext(AppContext)
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -24,11 +38,51 @@ const Notepad = () => {
   const handleCloseClick = (e) => {
     e.stopPropagation();
     setShowSquare(false);
+    setValue(null);
+    setSelectedEmoji('');
+    setSelectedscore(0);
+    setText('');
+    setShowSquare(false);
+    setShowEmojis(false);
   };
 
-  const handleTurnInClick = (e) => {
+  const handleTurnInClick = async (e) => {
     e.stopPropagation();
-    alert('Turned in');
+    if (!datevalue || !text || !selectedEmoji) {
+      alert('Please fill in all fields before submitting.');
+      return;
+    }
+    console.log("Date:", datevalue);
+    console.log("Note:", text);
+    console.log("Emoji:", selectedEmoji);
+    console.log("mood:", selectedmood);
+
+    try {
+      const {data} = await axios.post(backendUrl+'/api/note/insertnote',{
+          date: datevalue,
+          note: text,
+          emoji: selectedEmoji,
+          mood: selectedmood,
+          score: selectedscore
+        },{ withCredentials: true });
+
+        console.log("Response:", data);
+
+      if (data.success) {
+        alert("Note saved successfully!");
+        setValue(null);
+        setSelectedEmoji('');
+        setSelectedscore(0);
+        setText('');
+        setShowSquare(false);
+        setShowEmojis(false);
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      console.log("Error saving note:");
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   const handleTextChange = (e) => {
@@ -40,13 +94,21 @@ const Notepad = () => {
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmojiSelect = (emoji) => {
+  const handleEmojiSelect = (emoji,name,score) => {
     setSelectedEmoji(emoji);
-    setShowEmojis(false);
+    setSelectedmood(name);
+    setSelectedscore(score);
+    setShowEmojis(false)
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black">
+      <button
+        className="absolute top-10 left-20 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
+        onClick={() => navigate('/home')}
+      >
+        Leave
+      </button>
       <div
         className="group relative w-[90vw] h-[90vh] max-w-4xl flex items-center justify-center rounded-lg"
         onMouseEnter={handleMouseEnter}
@@ -55,7 +117,7 @@ const Notepad = () => {
       >
         <div
           className={`relative w-full h-full rounded-lg transition-all duration-300 ease-in-out ${
-            !showSquare ? 'group-hover:shadow-glow group-hover:scale-105' : ''
+            !showSquare ? 'group-hover:shadow-glow' : ''
           }`}
           style={{
             backgroundImage: hovered
@@ -75,8 +137,18 @@ const Notepad = () => {
                   onChange={handleTextChange}
                 />
               </div>
+            <div className='absolute top-[20px] left-1/3 ml-8 w-1/5 bg-[#d4d4d4] rounded-md'>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={datevalue}
+                  onChange={(newValue) => setValue(newValue)}
+                  format="DD-MM-YYYY"
+                  renderInput={(params) => <TextField {...params} />}
+                  />
+              </LocalizationProvider>
+            </div>
               <button
-                className="absolute top-4 left-1/3 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
+                className="absolute top-[25px] right-1/2 mr-24 transform -translate-x-1/2 bg-[#d4d4d4] text-black rounded px-4 py-2"
                 onClick={handleCloseClick}
               >
                 Close
@@ -90,19 +162,26 @@ const Notepad = () => {
               </button>
 
               <button
-                className="absolute top-24 right-80 transform -translate-x-1/2 bg-[#000000] text-black rounded-full px-2 py-2"
+                className="absolute top-[20px] left-1/2 ml-16 w-[50px] h-[55px] bg-[#d4d4d4] justify-center rounded-mdright-0 rounded "
                 onClick={handleEmojiClick}
               >
-                {selectedEmoji || 'Emoji'}
+                {selectedEmoji || 'mood'}
               </button>
 
               {showEmojis && (
-                <div className="absolute top-20 right-0 bg-[#d4d4d4] border border-black rounded p-2">
-                  {['💓', '❤️‍🔥', '🔥', '😀', '😨', '💔'].map((emoji) => (
-                    <button
+                <div className="absolute top-[20px] left-[53.6%] w-fit ml-8 bg-[#d4d4d4] rounded-mdright-0 rounded p-2">
+                  {[  {emoji:'💓',name:'Love',score : 100},
+                      {emoji:'😂',name:'Joy',score : 77},
+                      {emoji:'😟',name:'Worry',score : 40},
+                      {emoji:'😡',name:'Angry',score : 30}, 
+                      {emoji:'💪',name:'Courage',score : 68},
+                      {emoji:'💔',name:'Sadness',score : 20},
+                      {emoji:'😏',name:'Chill',score : 50}].map(({emoji,name,score}) => (
+                    <button 
                       key={emoji}
                       className="text-2xl m-1"
-                      onClick={() => handleEmojiSelect(emoji)}
+                      onClick={() => handleEmojiSelect(emoji,name,score)}
+                      title={name}
                     >
                       {emoji}
                     </button>
@@ -111,6 +190,7 @@ const Notepad = () => {
               )}
             </>
           )}
+
         </div>
       </div>
     </div>
